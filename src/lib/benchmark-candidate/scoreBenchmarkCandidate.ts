@@ -12,7 +12,29 @@ const TEST_RUNNER_PATTERN =
 const GIT_COMMIT_PUSH_PATTERN = /\bgit (commit|push)\b/;
 const QUALITY_GATE_PATTERN = /\b(typecheck|gatecheck|lint|tsc)\b/;
 const GIT_COMMIT_ONLY_PATTERN = /\bgit commit\b/;
-const DRIVER_MCP_PATTERN = /^mcp__driver[^_]*__/i;
+const DRIVER_MCP_TOOL_NAMES = new Set([
+  "fetch_registered_content",
+  "gather_task_context",
+  "get_architecture_overview",
+  "get_branches",
+  "get_changelog",
+  "get_code_map",
+  "get_codebase_names",
+  "get_detailed_changelog",
+  "get_file_documentation",
+  "get_llm_onboarding_guide",
+  "get_registered_content_list",
+  "get_source_file",
+  "register_content",
+  "remove_registered_content",
+]);
+
+const getDriverMcpToolName = (toolCallName: string): string | null => {
+  const match = toolCallName.match(/^mcp__[^_]+__(.+)$/);
+  if (match === null) return null;
+  const suffix = match[1];
+  return DRIVER_MCP_TOOL_NAMES.has(suffix) ? suffix : null;
+};
 
 // ── types ─────────────────────────────────────────────────────────────────────
 
@@ -194,10 +216,10 @@ export const scoreBenchmarkCandidate = (
 
         const { name, input, id: toolUseId } = item;
 
-        // Driver MCP detection
-        if (DRIVER_MCP_PATTERN.test(name)) {
-          const toolName = name.replace(DRIVER_MCP_PATTERN, "");
-          driverToolCounts[toolName] = (driverToolCounts[toolName] ?? 0) + 1;
+        // Driver MCP detection — match by known tool names, not server prefix
+        const driverTool = getDriverMcpToolName(name);
+        if (driverTool !== null) {
+          driverToolCounts[driverTool] = (driverToolCounts[driverTool] ?? 0) + 1;
         }
 
         // Read tracking

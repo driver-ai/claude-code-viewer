@@ -381,6 +381,25 @@ describe("scoreBenchmarkCandidate", () => {
     });
   });
 
+  test("non-Driver MCP tool with mcp__ prefix is not detected as Driver", () => {
+    const tu1 = nextId();
+
+    const conversations: readonly ExtendedConversation[] = [
+      makeAssistantEntry([
+        {
+          id: tu1,
+          name: "mcp__github__search_code",
+          input: { query: "auth" },
+        },
+      ]),
+    ];
+
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.driverToolBreakdown.used).toBe(false);
+    expect(result.driverToolBreakdown.totalCalls).toBe(0);
+    expect(result.driverToolBreakdown.toolCounts).toEqual({});
+  });
+
   test("no Driver MCP tools → driverToolBreakdown.used is false with empty toolCounts", () => {
     const tu1 = nextId();
 

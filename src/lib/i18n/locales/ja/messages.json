@@ -563,6 +563,17 @@
     ],
     "translation": "セッションを選択してベンチマーク分析を表示してください。"
   },
+  "benchmark.possible": {
+    "placeholders": {},
+    "comments": [],
+    "origin": [
+      [
+        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
+        37
+      ]
+    ],
+    "translation": "可能"
+  },
   "benchmark.signals.context": {
     "placeholders": {},
     "comments": [],
@@ -607,6 +618,17 @@
     ],
     "translation": "検証可能性"
   },
+  "benchmark.strong": {
+    "placeholders": {},
+    "comments": [],
+    "origin": [
+      [
+        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
+        33
+      ]
+    ],
+    "translation": "強い"
+  },
   "benchmark.tab.title": {
     "placeholders": {},
     "comments": [],
@@ -617,6 +639,17 @@
       ]
     ],
     "translation": "ベンチマーク候補"
+  },
+  "benchmark.weak": {
+    "placeholders": {},
+    "comments": [],
+    "origin": [
+      [
+        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
+        41
+      ]
+    ],
+    "translation": "弱い"
   },
   "chat.attach_file": {
     "placeholders": {},

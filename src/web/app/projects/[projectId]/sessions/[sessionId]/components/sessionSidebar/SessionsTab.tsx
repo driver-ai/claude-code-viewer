@@ -10,7 +10,7 @@ import {
   RepeatIcon,
   WaypointsIcon,
 } from "lucide-react";
-import { type FC, useEffect, useMemo, useRef } from "react";
+import { type FC, type ReactNode, useEffect, useMemo, useRef } from "react";
 import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import { formatLocaleDate } from "@/lib/date/formatLocaleDate";
 import { createVirtualSessionEntries } from "@/lib/virtual-messages/createVirtualSessionEntries";
@@ -30,18 +30,18 @@ import { sessionProcessesAtom } from "../../store/sessionProcessesAtom";
 
 const ratingConfig = {
   strong: {
-    labelId: "benchmark.strong",
+    label: <Trans id="benchmark.strong" />,
     className: "bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30",
   },
   possible: {
-    labelId: "benchmark.possible",
+    label: <Trans id="benchmark.possible" />,
     className: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-500/30",
   },
   weak: {
-    labelId: "benchmark.weak",
+    label: <Trans id="benchmark.weak" />,
     className: "bg-muted text-muted-foreground border-border",
   },
-} satisfies Record<BenchmarkCandidateScore["overall"], { labelId: string; className: string }>;
+} satisfies Record<BenchmarkCandidateScore["overall"], { label: ReactNode; className: string }>;
 
 const CompactScoreBar: FC<{ value: number }> = ({ value }) => (
   <div className="h-1 flex-1 rounded-full bg-sidebar-accent overflow-hidden">
@@ -59,7 +59,7 @@ const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore; timestamp?: str
   score,
   timestamp,
 }) => {
-  const { labelId, className } = ratingConfig[score.overall];
+  const { label, className } = ratingConfig[score.overall];
   return (
     <div className="flex items-center gap-1.5">
       <span
@@ -69,7 +69,7 @@ const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore; timestamp?: str
         )}
       >
         <FlaskConical className="h-2.5 w-2.5" />
-        <Trans id={labelId} />
+        {label}
       </span>
       <div className="flex items-center gap-1 flex-1 min-w-0">
         <CompactScoreBar value={score.contextDifficulty} />

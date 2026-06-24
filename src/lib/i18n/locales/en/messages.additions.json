@@ -146,6 +146,9 @@
   "panel.tab.review": {
     "translation": "Review"
   },
+  "panel.tab.benchmark": {
+    "translation": "Benchmark"
+  },
   "panel.files.tool_calls_section": {
     "translation": "Tool Calls"
   },

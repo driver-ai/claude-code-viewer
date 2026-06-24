@@ -149,6 +149,9 @@
   "panel.tab.review": {
     "translation": "审查"
   },
+  "panel.tab.benchmark": {
+    "translation": "基准测试"
+  },
   "panel.files.tool_calls_section": {
     "translation": "工具调用"
   },

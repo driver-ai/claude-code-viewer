@@ -19,6 +19,7 @@ import { useSyncRightPanelWithSearchParams } from "@/web/hooks/useSyncRightPanel
 import { cn } from "@/web/utils";
 import { useProject } from "../../../hooks/useProject";
 import { SessionPageMain } from "./SessionPageMain";
+import { BenchmarkTab } from "./sessionSidebar/BenchmarkTab";
 import { MobileSidebar } from "./sessionSidebar/MobileSidebar";
 import type { Tab } from "./sessionSidebar/schema";
 import { SessionSidebar } from "./sessionSidebar/SessionSidebar";
@@ -157,6 +158,13 @@ const SessionPageInner: FC<{
         <RightPanel
           projectId={projectId}
           sessionId={sessionId}
+          benchmarkTabContent={
+            sessionId !== undefined && sessionId !== "" ? (
+              <Suspense fallback={<Loading />}>
+                <BenchmarkTab projectId={projectId} sessionId={sessionId} />
+              </Suspense>
+            ) : null
+          }
           gitTabContent={<GitTabContent projectId={projectId} sessionId={sessionId} />}
           filesToolsTabContent={
             sessionId !== undefined && sessionId !== "" ? (

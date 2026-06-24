@@ -149,6 +149,9 @@
   "panel.tab.review": {
     "translation": "レビュー"
   },
+  "panel.tab.benchmark": {
+    "translation": "ベンチマーク"
+  },
   "panel.files.tool_calls_section": {
     "translation": "ツール呼び出し"
   },

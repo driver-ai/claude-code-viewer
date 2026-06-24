@@ -3,6 +3,7 @@ import { useSetAtom } from "jotai";
 import {
   ClipboardCheckIcon,
   FileTextIcon,
+  FlaskConicalIcon,
   GitCompareIcon,
   GlobeIcon,
   RefreshCwIcon,
@@ -28,6 +29,7 @@ import {
 type RightPanelProps = {
   projectId: string;
   sessionId?: string;
+  benchmarkTabContent?: ReactNode;
   gitTabContent?: ReactNode;
   filesToolsTabContent?: ReactNode;
   reviewTabContent?: ReactNode;
@@ -40,6 +42,11 @@ type TabConfig = {
 };
 
 const tabs: TabConfig[] = [
+  {
+    id: "benchmark",
+    icon: FlaskConicalIcon,
+    label: <Trans id="panel.tab.benchmark" />,
+  },
   {
     id: "explorer",
     icon: FileTextIcon,
@@ -59,6 +66,7 @@ const tabs: TabConfig[] = [
 ];
 
 export const RightPanel: FC<RightPanelProps> = ({
+  benchmarkTabContent,
   gitTabContent,
   filesToolsTabContent,
   reviewTabContent,
@@ -245,6 +253,9 @@ export const RightPanel: FC<RightPanelProps> = ({
 
       {/* Tab content */}
       <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        {activeTab === "benchmark" && (
+          <div className="flex-1 overflow-auto">{benchmarkTabContent}</div>
+        )}
         {activeTab === "git" && <div className="flex-1 overflow-auto">{gitTabContent}</div>}
         {activeTab === "explorer" && (
           <div className="flex-1 overflow-auto">{filesToolsTabContent}</div>

@@ -26,7 +26,7 @@ export const rightPanelOpenAtom = atom(
 );
 export const rightPanelActiveTabAtom = atomWithStorage<RightPanelTab>(
   "rightPanelActiveTab",
-  "explorer",
+  "benchmark",
 );
 export const rightPanelWidthAtom = atom(28);
 export const rightPanelTodoOpenAtom = atom(true);

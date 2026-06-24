@@ -32,7 +32,8 @@ const DRIVER_MCP_TOOL_NAMES = new Set([
 const getDriverMcpToolName = (toolCallName: string): string | null => {
   const match = toolCallName.match(/^mcp__[^_]+__(.+)$/);
   if (match === null) return null;
-  const suffix = match[1];
+  const suffix = match[1] ?? null;
+  if (suffix === null) return null;
   return DRIVER_MCP_TOOL_NAMES.has(suffix) ? suffix : null;
 };
 

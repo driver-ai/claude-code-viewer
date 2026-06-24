@@ -6,7 +6,7 @@ import { tabSchema } from "@/web/app/projects/[projectId]/sessions/[sessionId]/c
 import { NotFound } from "../../../components/NotFound";
 import { ProtectedRoute } from "../../../components/ProtectedRoute";
 
-const rightPanelTabSchema = z.enum(["explorer", "git", "review", "browser"]);
+const rightPanelTabSchema = z.enum(["benchmark", "explorer", "git", "review", "browser"]);
 
 const sessionSearchSchema = z.object({
   sessionId: z.string().optional(),

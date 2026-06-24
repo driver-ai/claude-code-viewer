@@ -1,1 +1,1 @@
-export type RightPanelTab = "explorer" | "git" | "review" | "browser";
+export type RightPanelTab = "benchmark" | "explorer" | "git" | "review" | "browser";

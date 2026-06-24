@@ -1,5 +1,6 @@
 import { FileSystem, Path } from "@effect/platform";
 import { Context, Effect, Layer } from "effect";
+import { scoreBenchmarkCandidate } from "../../../../lib/benchmark-candidate/scoreBenchmarkCandidate.ts";
 import type { ControllerResponse } from "../../../lib/effect/toEffectResponse.ts";
 import type { InferEffect } from "../../../lib/effect/types.ts";
 import { computeClaudeProjectFilePath } from "../../claude-code/functions/computeClaudeProjectFilePath.ts";
@@ -87,12 +88,23 @@ const LayerImpl = Effect.gen(function* () {
         filteredSessions = Array.from(sessionMap.values());
       }
 
+      const sessionsWithScores = yield* Effect.forEach(
+        filteredSessions,
+        (session) =>
+          Effect.gen(function* () {
+            const { session: detail } = yield* sessionRepository.getSession(projectId, session.id);
+            const benchmarkScore = detail ? scoreBenchmarkCandidate(detail.conversations) : null;
+            return { ...session, benchmarkScore };
+          }),
+        { concurrency: 5 },
+      );
+
       const hasMore = sessions.length >= 20;
       return {
         status: 200,
         response: {
           project,
-          sessions: filteredSessions,
+          sessions: sessionsWithScores,
           nextCursor: hasMore ? sessions.at(-1)?.id : undefined,
         },
       } as const satisfies ControllerResponse;

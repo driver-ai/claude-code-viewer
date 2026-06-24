@@ -126,7 +126,7 @@ const LayerImpl = Effect.gen(function* () {
 
       return {
         status: 200,
-        response: { score },
+        response: { score, cost: session.meta.cost },
       } as const satisfies ControllerResponse;
     });
 

@@ -435,7 +435,24 @@ export const sessionBenchmarkScoreQuery = (projectId: string, sessionId: string)
         throw new Error("Failed to fetch benchmark score");
       }
 
-      const data: { score: BenchmarkCandidateScore } = await response.json();
+      const data: {
+        score: BenchmarkCandidateScore;
+        cost: {
+          totalUsd: number;
+          breakdown: {
+            inputTokensUsd: number;
+            outputTokensUsd: number;
+            cacheCreationUsd: number;
+            cacheReadUsd: number;
+          };
+          tokenUsage: {
+            inputTokens: number;
+            outputTokens: number;
+            cacheCreationTokens: number;
+            cacheReadTokens: number;
+          };
+        };
+      } = await response.json();
       return data;
     },
   }) as const;

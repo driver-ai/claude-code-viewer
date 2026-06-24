@@ -2,6 +2,7 @@ import { Trans } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import {
+  DollarSignIcon,
   FileTextIcon,
   FlaskConical,
   GitCommitHorizontalIcon,
@@ -272,14 +273,22 @@ export const SessionsTab: FC<{
                       </>
                     )}
                 </div>
-                {session.lastModifiedAt && (
-                  <span className="text-[10px] text-sidebar-foreground/50">
-                    {formatLocaleDate(session.lastModifiedAt, {
-                      locale: config.locale,
-                      target: "time",
-                    })}
-                  </span>
-                )}
+                <div className="flex items-center justify-between text-[10px] text-sidebar-foreground/50">
+                  {session.lastModifiedAt && (
+                    <span>
+                      {formatLocaleDate(session.lastModifiedAt, {
+                        locale: config.locale,
+                        target: "time",
+                      })}
+                    </span>
+                  )}
+                  {session.meta.cost.totalUsd > 0 && (
+                    <span className="flex items-center gap-0.5 font-mono">
+                      <DollarSignIcon className="w-2.5 h-2.5" />
+                      {session.meta.cost.totalUsd.toFixed(2)}
+                    </span>
+                  )}
+                </div>
               </div>
             </Link>
           );

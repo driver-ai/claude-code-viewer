@@ -1,6 +1,6 @@
 import { Trans } from "@lingui/react";
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, FlaskConical, Loader2, XCircle } from "lucide-react";
+import { CheckCircle2, DollarSignIcon, FlaskConical, Loader2, XCircle } from "lucide-react";
 import type { FC } from "react";
 import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import { sessionBenchmarkScoreQuery } from "@/web/lib/api/queries";
@@ -83,7 +83,23 @@ const NumSignal: FC<{ value: number; label: string; suffix?: string }> = ({
 
 // ── main panel ────────────────────────────────────────────────────────────────
 
-const ScoreDisplay: FC<{ score: BenchmarkCandidateScore }> = ({ score }) => {
+type SessionCost = {
+  totalUsd: number;
+  breakdown: {
+    inputTokensUsd: number;
+    outputTokensUsd: number;
+    cacheCreationUsd: number;
+    cacheReadUsd: number;
+  };
+};
+
+const formatUsd = (value: number): string =>
+  value < 0.01 && value > 0 ? "<$0.01" : `$${value.toFixed(2)}`;
+
+const ScoreDisplay: FC<{ score: BenchmarkCandidateScore; cost?: SessionCost }> = ({
+  score,
+  cost,
+}) => {
   const { contextDifficulty, verifiability, overall, signals, driverToolBreakdown } = score;
 
   return (
@@ -94,6 +110,16 @@ const ScoreDisplay: FC<{ score: BenchmarkCandidateScore }> = ({ score }) => {
         </span>
         <OverallBadge overall={overall} />
       </div>
+
+      {cost !== undefined && (
+        <div className="flex items-center gap-1.5 text-xs">
+          <DollarSignIcon className="h-3.5 w-3.5 text-sidebar-foreground/50" />
+          <span className="font-mono font-medium text-sidebar-foreground">
+            {formatUsd(cost.totalUsd)}
+          </span>
+          <span className="text-sidebar-foreground/50">session cost</span>
+        </div>
+      )}
 
       {/* Sub-scores */}
       <div className="space-y-2">
@@ -194,5 +220,5 @@ export const BenchmarkTab: FC<{ projectId: string; sessionId: string }> = ({
     );
   }
 
-  return <ScoreDisplay score={data.score} />;
+  return <ScoreDisplay score={data.score} cost={data.cost} />;
 };

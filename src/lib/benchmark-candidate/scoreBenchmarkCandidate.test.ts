@@ -546,6 +546,100 @@ describe("scoreBenchmarkCandidate", () => {
     expect(result.signals.editFanOutDirs).toBe(1); // same /src dir
   });
 
+  // ── Isolatability signals ────────────────────────────────────────────────
+
+  test("session with 10+ commits → contextDifficulty is reduced by multi-commit penalty", () => {
+    // Build a session with 10 git commit commands and enough context difficulty to see the penalty
+    const reads = Array.from({ length: 6 }, () => nextId());
+    const commits = Array.from({ length: 10 }, () => nextId());
+    const editId = nextId();
+
+    const conversations: readonly ExtendedConversation[] = [
+      makeUserTextEntry("Implement the full authentication system"),
+      // 6 distinct file reads + 3 turns before edit → base contextDifficulty
+      makeAssistantEntry(
+        reads.map((id, i) => ({
+          id,
+          name: "Read",
+          input: { file_path: `/src/file${String(i)}.ts` },
+        })),
+      ),
+      ...reads.map((id) => makeToolResultEntry(id, "content")),
+      makeAssistantEntry([{ id: nextId(), name: "Grep", input: { pattern: "auth" } }]),
+      makeAssistantEntry([{ id: editId, name: "Write", input: { file_path: "/src/auth.ts" } }]),
+      // 10 git commits
+      ...commits.flatMap((id) => [
+        makeAssistantEntry([
+          { id, name: "Bash", input: { command: `git commit -m 'feat: step'` } },
+        ]),
+        makeToolResultEntry(id, "committed"),
+      ]),
+    ];
+
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.signals.commitCount).toBe(10);
+    // Penalty: Math.min(20, (10-3)*5) = 20
+    // Without penalty, base contextDifficulty would be higher; with penalty it's reduced
+    // Base: 6 files * 5 = 25 (capped) + 1 dir * 7 = 7 + 2 turns * 5 = 10 + searches = some
+    // We just check the penalty was applied by comparing to a known floor
+    const baseDifficulty =
+      Math.min(25, 6 * 5) + Math.min(20, 1 * 7) + Math.min(20, 2 * 5) + 0 + 0 + Math.min(10, 1 * 2);
+    expect(result.contextDifficulty).toBe(Math.max(0, baseDifficulty - 20));
+  });
+
+  test("session with many root user messages → penalized as multi-prompt-cycle", () => {
+    // 8 root user messages (parentUuid: null) → 8 prompt cycles
+    const conversations: readonly ExtendedConversation[] = Array.from({ length: 8 }, (_, i) => {
+      const reads = [nextId()];
+      return [
+        makeUserTextEntry(`Task ${String(i + 1)}: do something`),
+        makeAssistantEntry(
+          reads.map((id) => ({
+            id,
+            name: "Read",
+            input: { file_path: `/src/f${String(i)}.ts` },
+          })),
+        ),
+        ...reads.map((id) => makeToolResultEntry(id, "content")),
+      ];
+    }).flat();
+
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.signals.promptCycleCount).toBe(8);
+    // Penalty: Math.min(15, (8-5)*3) = 9
+    // 8 distinct files read → 25 pts from files, some from turns
+    // But prompt cycle penalty reduces by 9
+  });
+
+  test("session with 1 commit and 1 prompt cycle → no isolatability penalty", () => {
+    const tuRead = nextId();
+    const tuEdit = nextId();
+    const tuCommit = nextId();
+
+    const conversations: readonly ExtendedConversation[] = [
+      makeUserTextEntry("Fix the login bug"),
+      makeAssistantEntry([
+        { id: tuRead, name: "Read", input: { file_path: "/src/login.ts" } },
+      ]),
+      makeToolResultEntry(tuRead, "content"),
+      makeAssistantEntry([
+        { id: tuEdit, name: "Write", input: { file_path: "/src/login.ts" } },
+      ]),
+      makeAssistantEntry([
+        { id: tuCommit, name: "Bash", input: { command: "git commit -m 'fix: login'" } },
+      ]),
+      makeToolResultEntry(tuCommit, "committed"),
+    ];
+
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.signals.commitCount).toBe(1);
+    expect(result.signals.promptCycleCount).toBe(1);
+    // No penalty applied — base contextDifficulty is preserved
+    const baseDifficulty =
+      Math.min(25, 1 * 5) + Math.min(20, 1 * 7) + Math.min(20, 1 * 5) + 0 + 0 + 0;
+    expect(result.contextDifficulty).toBe(baseDifficulty);
+  });
+
   test("multiple reads of the same file count as re-reads", () => {
     const tu1 = nextId();
     const tu2 = nextId();

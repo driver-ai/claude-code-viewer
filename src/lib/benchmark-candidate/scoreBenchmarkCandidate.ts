@@ -11,6 +11,7 @@ const TEST_RUNNER_PATTERN =
   /\b(pytest|jest|vitest|go test|cargo test|pnpm test|npm test|yarn test|bun test|mocha|rspec)\b/;
 const GIT_COMMIT_PUSH_PATTERN = /\bgit (commit|push)\b/;
 const QUALITY_GATE_PATTERN = /\b(typecheck|gatecheck|lint|tsc)\b/;
+const GIT_COMMIT_ONLY_PATTERN = /\bgit commit\b/;
 const DRIVER_MCP_PATTERN = /^mcp__driver__/i;
 
 // ── types ─────────────────────────────────────────────────────────────────────
@@ -29,6 +30,9 @@ export type BenchmarkSignals = {
   readonly hasPrLink: boolean;
   readonly hasQualityGate: boolean;
   readonly hasCrispTaskStatement: boolean;
+  readonly commitCount: number;
+  readonly promptCycleCount: number;
+  readonly sessionDurationMinutes: number;
 };
 
 export type DriverToolBreakdown = {
@@ -103,9 +107,19 @@ export const scoreBenchmarkCandidate = (
   let testRunnerInvoked = false;
   let lastTestRunPassed = false;
   let hasCrispTaskStatement = false;
+  let commitCount = 0;
+  let promptCycleCount = 0;
+  let firstTimestamp: string | null = null;
+  let lastTimestamp: string | null = null;
 
   for (const conv of conversations) {
     if (conv.type === "x-error") continue;
+
+    // Track timestamps for session duration (all non-error entries have timestamp)
+    if ("timestamp" in conv && typeof conv.timestamp === "string") {
+      if (firstTimestamp === null) firstTimestamp = conv.timestamp;
+      lastTimestamp = conv.timestamp;
+    }
 
     if (conv.type === "pr-link") {
       hasPrLink = true;
@@ -113,6 +127,21 @@ export const scoreBenchmarkCandidate = (
     }
 
     if (conv.type === "user") {
+      // Count prompt cycles: each root user message that is NOT purely tool results
+      // starts a new prompt cycle (tool_result entries are continuations, not new prompts)
+      if (conv.parentUuid === null) {
+        const { content } = conv.message;
+        const isPureToolResult =
+          Array.isArray(content) &&
+          content.length > 0 &&
+          content.every(
+            (item) => typeof item !== "string" && typeof item === "object" && item.type === "tool_result",
+          );
+        if (!isPureToolResult) {
+          promptCycleCount++;
+        }
+      }
+
       const { content } = conv.message;
 
       // Detect crisp task statement from first meaningful plain-text user message
@@ -195,6 +224,9 @@ export const scoreBenchmarkCandidate = (
           if (GIT_COMMIT_PUSH_PATTERN.test(command)) {
             hasCommitOrPush = true;
           }
+          if (GIT_COMMIT_ONLY_PATTERN.test(command)) {
+            commitCount++;
+          }
           if (QUALITY_GATE_PATTERN.test(command)) {
             hasQualityGate = true;
           }
@@ -238,11 +270,17 @@ export const scoreBenchmarkCandidate = (
     hasPrLink,
     hasQualityGate,
     hasCrispTaskStatement,
+    commitCount,
+    promptCycleCount,
+    sessionDurationMinutes:
+      firstTimestamp !== null && lastTimestamp !== null
+        ? (Date.parse(lastTimestamp) - Date.parse(firstTimestamp)) / 60000
+        : 0,
   };
 
   // ── sub-scores ─────────────────────────────────────────────────────────────
 
-  const contextDifficulty = Math.min(
+  let contextDifficulty = Math.min(
     100,
     Math.min(25, distinctFilesRead * 5) + // 5+ distinct files → 25 pts
       Math.min(20, editFanOutDirs * 7) + // 3+ dirs edited  → 21 pts (capped at 20)
@@ -251,6 +289,15 @@ export const scoreBenchmarkCandidate = (
       Math.min(10, reReadCount * 5) + // 2+ re-reads      → 10 pts
       Math.min(10, searchToolCalls * 2), // 5+ searches      → 10 pts
   );
+
+  // ── isolatability penalties ────────────────────────────────────────────────
+
+  if (commitCount > 3) {
+    contextDifficulty = Math.max(0, contextDifficulty - Math.min(20, (commitCount - 3) * 5));
+  }
+  if (promptCycleCount > 5) {
+    contextDifficulty = Math.max(0, contextDifficulty - Math.min(15, (promptCycleCount - 5) * 3));
+  }
 
   const verifiability = Math.min(
     100,

@@ -363,36 +363,41 @@ const SessionPageMainContent: FC<
     sessionId ?? "",
   );
 
-  const handleExportJsonl = () => {
-    if (sessionData === null || sessionData === undefined || !hasSessionId) return;
+  const handleExportJsonl = async () => {
+    if (!hasSessionId) return;
 
-    const safeSessionId = sessionId.replace(/[^a-zA-Z0-9._-]/g, "_") || "unknown";
-    const jsonl = sessionData.conversations
-      .map((conversation) => {
-        if (conversation.type === "x-error") {
-          return conversation.line;
-        }
+    try {
+      const response = await honoClient.api.projects[":projectId"].sessions[":sessionId"][
+        "export-jsonl"
+      ].$get({
+        param: { projectId, sessionId },
+      });
 
-        return JSON.stringify(conversation);
-      })
-      .join("\n");
+      if (!response.ok) {
+        toast.error("Failed to export session");
+        return;
+      }
 
-    const file = new File([jsonl], `ccv-jsonl-export-${safeSessionId}.jsonl`, {
-      type: "application/x-ndjson",
-    });
-    const url = URL.createObjectURL(file);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = file.name;
-    link.rel = "noopener";
-    link.target = "_self";
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-      link.remove();
-    }, 1000);
+      const data = await response.json();
+      const file = new File([data.content], data.filename, {
+        type: "application/x-ndjson",
+      });
+      const url = URL.createObjectURL(file);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = file.name;
+      link.rel = "noopener";
+      link.target = "_self";
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+        link.remove();
+      }, 1000);
+    } catch {
+      toast.error("Failed to export session");
+    }
   };
 
   const handleCopySessionFilePath = async () => {

@@ -89,6 +89,26 @@ const LayerImpl = Effect.gen(function* () {
       } as const satisfies ControllerResponse;
     });
 
+  const exportSessionJsonl = (options: { projectId: string; sessionId: string }) =>
+    Effect.gen(function* () {
+      const { projectId, sessionId } = options;
+      const sessionPath = decodeSessionId(projectId, sessionId);
+
+      const exists = yield* fs.exists(sessionPath);
+      if (!exists) {
+        return {
+          status: 404,
+          response: { error: "Session not found" },
+        } as const satisfies ControllerResponse;
+      }
+
+      const content = yield* fs.readFileString(sessionPath);
+      return {
+        status: 200,
+        response: { content, filename: `${sessionId}.jsonl` },
+      } as const satisfies ControllerResponse;
+    });
+
   const getBenchmarkScore = (options: { projectId: string; sessionId: string }) =>
     Effect.gen(function* () {
       const { projectId, sessionId } = options;
@@ -113,6 +133,7 @@ const LayerImpl = Effect.gen(function* () {
   return {
     getSession,
     exportSessionHtml,
+    exportSessionJsonl,
     deleteSession,
     getBenchmarkScore,
   };

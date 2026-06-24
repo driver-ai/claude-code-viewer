@@ -214,7 +214,7 @@ export const SessionsTab: FC<{
                   "bg-blue-100 dark:bg-blue-900/50 border-blue-400 dark:border-blue-600 shadow-md ring-1 ring-blue-200/50 dark:ring-blue-700/50 hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:border-blue-400 dark:hover:border-blue-600",
               )}
             >
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <div className="flex items-start justify-between gap-2 pr-6">
                   <h3 className="text-sm font-medium line-clamp-2 leading-tight text-sidebar-foreground flex-1">
                     {title}

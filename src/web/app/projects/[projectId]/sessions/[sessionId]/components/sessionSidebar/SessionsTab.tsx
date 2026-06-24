@@ -1,7 +1,15 @@
 import { Trans } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { FlaskConical, MessageSquareIcon, PlusIcon } from "lucide-react";
+import {
+  FileTextIcon,
+  FlaskConical,
+  GitCommitHorizontalIcon,
+  MessageSquareIcon,
+  PlusIcon,
+  RepeatIcon,
+  WaypointsIcon,
+} from "lucide-react";
 import { type FC, useEffect, useMemo, useRef } from "react";
 import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import { formatLocaleDate } from "@/lib/date/formatLocaleDate";
@@ -64,14 +72,6 @@ const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore }> = ({ score })
         <CompactScoreBar value={score.contextDifficulty} />
         <CompactScoreBar value={score.verifiability} />
       </div>
-      {score.driverToolBreakdown.used && (
-        <span
-          className="inline-flex items-center rounded bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/30 px-1 py-0 text-[10px] font-medium leading-tight"
-          title="Driver MCP"
-        >
-          <Trans id="benchmark.driverMcp" />
-        </span>
-      )}
     </div>
   );
 };
@@ -243,10 +243,34 @@ export const SessionsTab: FC<{
                   )}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2 text-xs text-sidebar-foreground/70 min-w-0">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1" title="Messages">
                       <MessageSquareIcon className="w-3 h-3" />
                       <span>{session.meta.messageCount}</span>
                     </div>
+                    {"benchmarkScore" in session &&
+                      session.benchmarkScore !== undefined &&
+                      session.benchmarkScore !== null && (
+                        <>
+                          <div className="flex items-center gap-1" title="Turns">
+                            <RepeatIcon className="w-3 h-3" />
+                            <span>{session.benchmarkScore.signals.totalAssistantTurns}</span>
+                          </div>
+                          <div className="flex items-center gap-1" title="Files read">
+                            <FileTextIcon className="w-3 h-3" />
+                            <span>{session.benchmarkScore.signals.distinctFilesRead}</span>
+                          </div>
+                          {session.benchmarkScore.signals.hasCommitOrPush && (
+                            <span title="Committed / pushed">
+                              <GitCommitHorizontalIcon className="w-3 h-3 text-green-600 dark:text-green-400" />
+                            </span>
+                          )}
+                          {session.benchmarkScore.driverToolBreakdown.used && (
+                            <span title="Driver MCP">
+                              <WaypointsIcon className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                            </span>
+                          )}
+                        </>
+                      )}
                   </div>
                   {session.lastModifiedAt && (
                     <span className="text-xs text-sidebar-foreground/60 shrink-0">

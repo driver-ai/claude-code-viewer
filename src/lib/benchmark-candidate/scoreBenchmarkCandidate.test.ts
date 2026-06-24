@@ -353,6 +353,34 @@ describe("scoreBenchmarkCandidate", () => {
     });
   });
 
+  test("detects driver-mcp naming convention (mcp__driver-mcp__*)", () => {
+    const tu1 = nextId();
+    const tu2 = nextId();
+
+    const conversations: readonly ExtendedConversation[] = [
+      makeAssistantEntry([
+        {
+          id: tu1,
+          name: "mcp__driver-mcp__gather_task_context",
+          input: { task_description: "research" },
+        },
+        {
+          id: tu2,
+          name: "mcp__driver-mcp__get_codebase_names",
+          input: {},
+        },
+      ]),
+    ];
+
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.driverToolBreakdown.used).toBe(true);
+    expect(result.driverToolBreakdown.totalCalls).toBe(2);
+    expect(result.driverToolBreakdown.toolCounts).toEqual({
+      gather_task_context: 1,
+      get_codebase_names: 1,
+    });
+  });
+
   test("no Driver MCP tools → driverToolBreakdown.used is false with empty toolCounts", () => {
     const tu1 = nextId();
 

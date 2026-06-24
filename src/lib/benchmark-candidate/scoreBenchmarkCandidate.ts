@@ -12,7 +12,7 @@ const TEST_RUNNER_PATTERN =
 const GIT_COMMIT_PUSH_PATTERN = /\bgit (commit|push)\b/;
 const QUALITY_GATE_PATTERN = /\b(typecheck|gatecheck|lint|tsc)\b/;
 const GIT_COMMIT_ONLY_PATTERN = /\bgit commit\b/;
-const DRIVER_MCP_PATTERN = /^mcp__driver__/i;
+const DRIVER_MCP_PATTERN = /^mcp__driver[^_]*__/i;
 
 // ── types ─────────────────────────────────────────────────────────────────────
 

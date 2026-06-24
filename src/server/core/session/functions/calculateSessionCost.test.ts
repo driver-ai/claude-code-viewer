@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { calculateTokenCost, normalizeModelName, type TokenUsage } from "./calculateSessionCost.ts";
 
 describe("normalizeModelName", () => {
-  it("should normalize claude-sonnet-4-20250514 to claude-3.5-sonnet", () => {
-    expect(normalizeModelName("claude-sonnet-4-20250514")).toBe("claude-3.5-sonnet");
+  it("should normalize claude-sonnet-4-20250514 to claude-sonnet-4.5", () => {
+    expect(normalizeModelName("claude-sonnet-4-20250514")).toBe("claude-sonnet-4.5");
   });
 
   it("should normalize claude-3-5-sonnet-20240620 to claude-3.5-sonnet", () => {
@@ -32,6 +32,22 @@ describe("normalizeModelName", () => {
 
   it("should normalize claude-haiku-4-5-20251001 to claude-haiku-4.5", () => {
     expect(normalizeModelName("claude-haiku-4-5-20251001")).toBe("claude-haiku-4.5");
+  });
+
+  it("should normalize claude-opus-4-6 to claude-opus-4.6", () => {
+    expect(normalizeModelName("claude-opus-4-6")).toBe("claude-opus-4.6");
+  });
+
+  it("should normalize claude-opus-4-7 to claude-opus-4.7", () => {
+    expect(normalizeModelName("claude-opus-4-7")).toBe("claude-opus-4.7");
+  });
+
+  it("should normalize claude-opus-4-8 to claude-opus-4.8", () => {
+    expect(normalizeModelName("claude-opus-4-8")).toBe("claude-opus-4.8");
+  });
+
+  it("should normalize claude-sonnet-4-6 to claude-sonnet-4.6", () => {
+    expect(normalizeModelName("claude-sonnet-4-6")).toBe("claude-sonnet-4.6");
   });
 
   it("should return claude-3.5-sonnet for unknown model", () => {
@@ -153,6 +169,19 @@ describe("calculateTokenCost", () => {
     expect(result.breakdown.outputTokensUsd).toBeCloseTo(0.075, 4);
     expect(result.breakdown.cacheCreationUsd).toBeCloseTo(0.009375, 4);
     expect(result.breakdown.cacheReadUsd).toBeCloseTo(0.00075, 4);
+  });
+
+  it("should calculate cost for Claude Opus 4.7 using current Opus pricing", () => {
+    const usage: TokenUsage = {
+      input_tokens: 1000,
+      output_tokens: 1000,
+      cache_creation_input_tokens: 500,
+      cache_read_input_tokens: 500,
+    };
+
+    const result = calculateTokenCost(usage, "claude-opus-4-7");
+
+    expect(result.totalUsd).toBeCloseTo(0.033375, 4);
   });
 
   it("should calculate cost for Claude Opus 4.5", () => {

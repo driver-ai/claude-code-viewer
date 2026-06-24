@@ -48,11 +48,16 @@ export type CostCalculationResult = {
  * Normalizes Claude API model names to standard model identifiers
  *
  * Examples:
+ * - "claude-opus-4-8" -> "claude-opus-4.8"
+ * - "claude-opus-4-7" -> "claude-opus-4.7"
+ * - "claude-opus-4-6" -> "claude-opus-4.6"
  * - "claude-opus-4-5-20251101" -> "claude-opus-4.5"
  * - "claude-opus-4-1-20250101" -> "claude-opus-4.1"
+ * - "claude-opus-4" -> "claude-opus-4.1"
+ * - "claude-sonnet-4-6" -> "claude-sonnet-4.6"
  * - "claude-sonnet-4-5-20250929" -> "claude-sonnet-4.5"
+ * - "claude-sonnet-4-20250514" -> "claude-sonnet-4.5"
  * - "claude-haiku-4-5-20251001" -> "claude-haiku-4.5"
- * - "claude-sonnet-4-20250514" -> "claude-3.5-sonnet"
  * - "claude-3-5-sonnet-20240620" -> "claude-3.5-sonnet"
  * - "claude-3-opus-20240229" -> "claude-3-opus"
  * - "claude-3-haiku-20240307" -> "claude-3-haiku"
@@ -63,46 +68,70 @@ export type CostCalculationResult = {
 export const normalizeModelName = (modelName: string): ModelName => {
   const normalized = modelName.toLowerCase();
 
-  // Claude Opus 4.5 patterns (more specific first)
+  if (normalized.includes("fable-5")) {
+    return "claude-fable-5";
+  }
+
+  if (normalized.includes("mythos-5")) {
+    return "claude-mythos-5";
+  }
+
+  if (normalized.includes("opus-4-8") || normalized.includes("opus-4.8")) {
+    return "claude-opus-4.8";
+  }
+
+  if (normalized.includes("opus-4-7") || normalized.includes("opus-4.7")) {
+    return "claude-opus-4.7";
+  }
+
+  if (normalized.includes("opus-4-6") || normalized.includes("opus-4.6")) {
+    return "claude-opus-4.6";
+  }
+
   if (normalized.includes("opus-4-5") || normalized.includes("opus-4.5")) {
     return "claude-opus-4.5";
   }
 
-  // Claude Opus 4.1 patterns
   if (normalized.includes("opus-4-1") || normalized.includes("opus-4.1")) {
     return "claude-opus-4.1";
   }
 
-  // Claude Sonnet 4.5 patterns
+  if (normalized.includes("opus-4")) {
+    return "claude-opus-4.1";
+  }
+
+  if (normalized.includes("sonnet-4-6") || normalized.includes("sonnet-4.6")) {
+    return "claude-sonnet-4.6";
+  }
+
   if (normalized.includes("sonnet-4-5") || normalized.includes("sonnet-4.5")) {
     return "claude-sonnet-4.5";
   }
 
-  // Claude Haiku 4.5 patterns
+  if (normalized.includes("sonnet-4")) {
+    return "claude-sonnet-4.5";
+  }
+
+  if (normalized.includes("3-5-sonnet") || normalized.includes("3.5-sonnet")) {
+    return "claude-3.5-sonnet";
+  }
+
   if (normalized.includes("haiku-4-5") || normalized.includes("haiku-4.5")) {
     return "claude-haiku-4.5";
   }
 
-  // Claude 3.5 Sonnet patterns (Sonnet 4 without version suffix)
-  if (
-    normalized.includes("sonnet-4") ||
-    normalized.includes("3-5-sonnet") ||
-    normalized.includes("3.5-sonnet")
-  ) {
-    return "claude-3.5-sonnet";
+  if (normalized.includes("haiku-3-5") || normalized.includes("haiku-3.5")) {
+    return "claude-haiku-3.5";
   }
 
-  // Claude 3 Opus patterns
   if (normalized.includes("3-opus") || normalized.includes("opus-20")) {
     return "claude-3-opus";
   }
 
-  // Claude 3 Haiku patterns
   if (normalized.includes("3-haiku") || normalized.includes("haiku-20")) {
     return "claude-3-haiku";
   }
 
-  // Unknown model - return default
   return "claude-3.5-sonnet";
 };
 

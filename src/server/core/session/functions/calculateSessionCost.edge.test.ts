@@ -7,12 +7,9 @@ import { normalizeModelName } from "./calculateSessionCost.ts";
  */
 describe("normalizeModelName - additional edge cases", () => {
   describe("opus-4 without version suffix", () => {
-    it("should fall back to default for 'claude-opus-4' (no .5 or .1 suffix)", () => {
-      // claude-opus-4 does NOT match opus-4-5 or opus-4.5 or opus-4-1 or opus-4.1
-      // It also does not match 3-opus or opus-20
-      // Expected: falls through to default = "claude-3.5-sonnet"
+    it("should map retired claude-opus-4 to claude-opus-4.1 pricing", () => {
       const result = normalizeModelName("claude-opus-4");
-      expect(result).toBe("claude-3.5-sonnet");
+      expect(result).toBe("claude-opus-4.1");
     });
   });
 
@@ -39,11 +36,9 @@ describe("normalizeModelName - additional edge cases", () => {
   });
 
   describe("claude-3.5-sonnet patterns", () => {
-    it("recognizes claude-sonnet-4 (without .5) as claude-3.5-sonnet", () => {
-      // "sonnet-4" is matched by the check: normalized.includes("sonnet-4")
-      // This maps to claude-3.5-sonnet per the comment: "Sonnet 4 without version suffix"
+    it("recognizes claude-sonnet-4 (without .6) as claude-sonnet-4.5", () => {
       const result = normalizeModelName("claude-sonnet-4-20250514");
-      expect(result).toBe("claude-3.5-sonnet");
+      expect(result).toBe("claude-sonnet-4.5");
     });
 
     it("recognizes claude-3.5-sonnet with dot", () => {

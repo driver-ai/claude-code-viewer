@@ -265,9 +265,10 @@ export const SessionsTab: FC<{
                             </span>
                           )}
                           {session.benchmarkScore.driverToolBreakdown.used && (
-                            <span title="Driver MCP">
-                              <WaypointsIcon className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                            </span>
+                            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400" title="Driver MCP calls">
+                              <WaypointsIcon className="w-3 h-3" />
+                              <span>{session.benchmarkScore.driverToolBreakdown.totalCalls}</span>
+                            </div>
                           )}
                         </>
                       )}

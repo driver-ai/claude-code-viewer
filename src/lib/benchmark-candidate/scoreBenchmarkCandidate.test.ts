@@ -404,9 +404,7 @@ describe("scoreBenchmarkCandidate", () => {
     const tu1 = nextId();
 
     const conversations: readonly ExtendedConversation[] = [
-      makeAssistantEntry([
-        { id: tu1, name: "Read", input: { file_path: "/src/foo.ts" } },
-      ]),
+      makeAssistantEntry([{ id: tu1, name: "Read", input: { file_path: "/src/foo.ts" } }]),
     ];
 
     const result = scoreBenchmarkCandidate(conversations);
@@ -665,13 +663,9 @@ describe("scoreBenchmarkCandidate", () => {
 
     const conversations: readonly ExtendedConversation[] = [
       makeUserTextEntry("Fix the login bug"),
-      makeAssistantEntry([
-        { id: tuRead, name: "Read", input: { file_path: "/src/login.ts" } },
-      ]),
+      makeAssistantEntry([{ id: tuRead, name: "Read", input: { file_path: "/src/login.ts" } }]),
       makeToolResultEntry(tuRead, "content"),
-      makeAssistantEntry([
-        { id: tuEdit, name: "Write", input: { file_path: "/src/login.ts" } },
-      ]),
+      makeAssistantEntry([{ id: tuEdit, name: "Write", input: { file_path: "/src/login.ts" } }]),
       makeAssistantEntry([
         { id: tuCommit, name: "Bash", input: { command: "git commit -m 'fix: login'" } },
       ]),
@@ -714,7 +708,8 @@ describe("scoreBenchmarkCandidate", () => {
         type: "user",
         message: {
           role: "user",
-          content: "<ide_opened_file>The user opened the file src/main.ts in their IDE</ide_opened_file>",
+          content:
+            "<ide_opened_file>The user opened the file src/main.ts in their IDE</ide_opened_file>",
         },
       },
     ];

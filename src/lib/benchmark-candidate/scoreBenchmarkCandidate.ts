@@ -140,7 +140,7 @@ export const scoreBenchmarkCandidate = (
 
     // Track timestamps for session duration (all non-error entries have timestamp)
     if ("timestamp" in conv && typeof conv.timestamp === "string") {
-      if (firstTimestamp === null) firstTimestamp = conv.timestamp;
+      firstTimestamp ??= conv.timestamp;
       lastTimestamp = conv.timestamp;
     }
 
@@ -158,7 +158,8 @@ export const scoreBenchmarkCandidate = (
           Array.isArray(content) &&
           content.length > 0 &&
           content.every(
-            (item) => typeof item !== "string" && typeof item === "object" && item.type === "tool_result",
+            (item) =>
+              typeof item !== "string" && typeof item === "object" && item.type === "tool_result",
           );
         if (!isPureToolResult) {
           promptCycleCount++;

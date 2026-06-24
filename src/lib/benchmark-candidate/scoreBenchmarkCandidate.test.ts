@@ -640,6 +640,70 @@ describe("scoreBenchmarkCandidate", () => {
     expect(result.contextDifficulty).toBe(baseDifficulty);
   });
 
+  // ── Task statement detection ─────────────────────────────────────────────
+
+  test("command-message entry does not trigger hasCrispTaskStatement", () => {
+    const conversations: readonly ExtendedConversation[] = [
+      {
+        ...baseEntry,
+        uuid: nextUuid(),
+        type: "user",
+        message: {
+          role: "user",
+          content:
+            "<command-message>drvr:feature</command-message>\n<command-name>/drvr:feature</command-name>",
+        },
+      },
+    ];
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.signals.hasCrispTaskStatement).toBe(false);
+  });
+
+  test("IDE context injection does not trigger hasCrispTaskStatement", () => {
+    const conversations: readonly ExtendedConversation[] = [
+      {
+        ...baseEntry,
+        uuid: nextUuid(),
+        type: "user",
+        message: {
+          role: "user",
+          content: "<ide_opened_file>The user opened the file src/main.ts in their IDE</ide_opened_file>",
+        },
+      },
+    ];
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.signals.hasCrispTaskStatement).toBe(false);
+  });
+
+  test("meaningful non-command user message triggers hasCrispTaskStatement", () => {
+    const conversations: readonly ExtendedConversation[] = [
+      // First message is a command (should be skipped)
+      {
+        ...baseEntry,
+        uuid: nextUuid(),
+        type: "user",
+        message: {
+          role: "user",
+          content: "<command-name>/init</command-name>",
+        },
+      },
+      // Second message is IDE context (should be skipped)
+      {
+        ...baseEntry,
+        uuid: nextUuid(),
+        type: "user",
+        message: {
+          role: "user",
+          content: "<ide_selection>selected text</ide_selection>",
+        },
+      },
+      // Third message is a real task
+      makeUserTextEntry("Fix the login form validation bug"),
+    ];
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.signals.hasCrispTaskStatement).toBe(true);
+  });
+
   test("multiple reads of the same file count as re-reads", () => {
     const tu1 = nextId();
     const tu2 = nextId();

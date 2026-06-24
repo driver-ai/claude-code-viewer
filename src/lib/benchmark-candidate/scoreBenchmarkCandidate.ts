@@ -148,9 +148,13 @@ export const scoreBenchmarkCandidate = (
       if (!hasCrispTaskStatement && conv.isMeta !== true) {
         const text = getFirstUserText(conv);
         if (text !== null) {
-          const parsed = parseUserMessage(text);
-          if (parsed.kind === "text" && parsed.content.trim().length > 10) {
-            hasCrispTaskStatement = true;
+          const trimmed = text.trim();
+          // Skip IDE context injections, empty/short messages
+          if (!trimmed.startsWith("<ide_") && trimmed.length > 10) {
+            const parsed = parseUserMessage(text);
+            if (parsed.kind === "text") {
+              hasCrispTaskStatement = true;
+            }
           }
         }
       }

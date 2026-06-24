@@ -1001,7 +1001,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        125
+        186
       ]
     ],
     "translation": "新しいチャットを開始"
@@ -1219,7 +1219,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        171
+        232
       ]
     ],
     "translation": "実行中"
@@ -1238,7 +1238,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        173
+        234
       ]
     ],
     "translation": "一時停止"
@@ -1304,7 +1304,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        144
+        151
       ]
     ],
     "translation": "Driver の有用性は独立して測定されます。Driver を使用していなくても強い候補になり得ます。"
@@ -1315,7 +1315,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        166
+        173
       ]
     ],
     "translation": "セッションを選択してベンチマーク分析を表示してください。"
@@ -1326,7 +1326,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        176
+        183
       ]
     ],
     "translation": "セッションを分析中..."
@@ -1337,7 +1337,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        185
+        192
       ]
     ],
     "translation": "ベンチマーク分析の読み込みに失敗しました。"
@@ -1796,13 +1796,24 @@
     ],
     "translation": "プロジェクト一覧に戻る"
   },
+  "benchmark.driverMcp": {
+    "placeholders": {},
+    "comments": [],
+    "origin": [
+      [
+        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
+        72
+      ]
+    ],
+    "translation": "Driver MCP"
+  },
   "sessions.title": {
     "placeholders": {},
     "comments": [],
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        99
+        160
       ]
     ],
     "translation": "セッション"
@@ -1817,7 +1828,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        103
+        164
       ]
     ],
     "translation": "合計"
@@ -1836,7 +1847,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        212
+        276
       ]
     ],
     "translation": "読み込み中..."
@@ -1851,7 +1862,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        214
+        278
       ]
     ],
     "translation": "さらに読み込む"
@@ -3839,6 +3850,18 @@
       ]
     ],
     "translation": "ポップ"
+  },
+  "benchmark.strong": {
+    "translation": "強い",
+    "obsolete": true
+  },
+  "benchmark.possible": {
+    "translation": "可能",
+    "obsolete": true
+  },
+  "benchmark.weak": {
+    "translation": "弱い",
+    "obsolete": true
   },
   "chat.toolbar.permission_mode.accept_edits": {
     "message": "Accept Edits",

@@ -250,5 +250,17 @@
   },
   "review.comments.empty": {
     "translation": "No comments"
+  },
+  "benchmark.strong": {
+    "translation": "Strong"
+  },
+  "benchmark.possible": {
+    "translation": "Possible"
+  },
+  "benchmark.weak": {
+    "translation": "Weak"
+  },
+  "benchmark.driverMcp": {
+    "translation": "Driver MCP"
   }
 }

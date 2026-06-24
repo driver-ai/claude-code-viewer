@@ -250,5 +250,17 @@
   },
   "review.comments.empty": {
     "translation": "コメントなし"
+  },
+  "benchmark.strong": {
+    "translation": "強い"
+  },
+  "benchmark.possible": {
+    "translation": "可能"
+  },
+  "benchmark.weak": {
+    "translation": "弱い"
+  },
+  "benchmark.driverMcp": {
+    "translation": "Driver MCP"
   }
 }

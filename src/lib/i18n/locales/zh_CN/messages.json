@@ -1001,7 +1001,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        125
+        186
       ]
     ],
     "translation": "开始新对话"
@@ -1219,7 +1219,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        171
+        232
       ]
     ],
     "translation": "运行中"
@@ -1238,7 +1238,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        173
+        234
       ]
     ],
     "translation": "已暂停"
@@ -1304,7 +1304,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        144
+        151
       ]
     ],
     "translation": "Driver 的有用性是独立衡量的。即使会话中未使用 Driver，也可以成为强候选。"
@@ -1315,7 +1315,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        166
+        173
       ]
     ],
     "translation": "请选择一个会话以查看基准分析。"
@@ -1326,7 +1326,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        176
+        183
       ]
     ],
     "translation": "正在分析会话..."
@@ -1337,7 +1337,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        185
+        192
       ]
     ],
     "translation": "加载基准分析失败。"
@@ -1796,13 +1796,24 @@
     ],
     "translation": "返回项目列表"
   },
+  "benchmark.driverMcp": {
+    "placeholders": {},
+    "comments": [],
+    "origin": [
+      [
+        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
+        72
+      ]
+    ],
+    "translation": "Driver MCP"
+  },
   "sessions.title": {
     "placeholders": {},
     "comments": [],
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        99
+        160
       ]
     ],
     "translation": "会话"
@@ -1817,7 +1828,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        103
+        164
       ]
     ],
     "translation": "总计"
@@ -1836,7 +1847,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        212
+        276
       ]
     ],
     "translation": "加载中..."
@@ -1851,7 +1862,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        214
+        278
       ]
     ],
     "translation": "加载更多"
@@ -3839,6 +3850,18 @@
       ]
     ],
     "translation": "Pop 音"
+  },
+  "benchmark.strong": {
+    "translation": "强",
+    "obsolete": true
+  },
+  "benchmark.possible": {
+    "translation": "可能",
+    "obsolete": true
+  },
+  "benchmark.weak": {
+    "translation": "弱",
+    "obsolete": true
   },
   "chat.toolbar.permission_mode.accept_edits": {
     "message": "Accept Edits",

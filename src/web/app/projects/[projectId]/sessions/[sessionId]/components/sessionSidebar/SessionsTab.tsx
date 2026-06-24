@@ -1,8 +1,9 @@
 import { Trans } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { MessageSquareIcon, PlusIcon } from "lucide-react";
+import { FlaskConical, MessageSquareIcon, PlusIcon } from "lucide-react";
 import { type FC, useEffect, useMemo, useRef } from "react";
+import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import { formatLocaleDate } from "@/lib/date/formatLocaleDate";
 import { createVirtualSessionEntries } from "@/lib/virtual-messages/createVirtualSessionEntries";
 import {
@@ -16,6 +17,66 @@ import { useConfig } from "../../../../../../hooks/useConfig";
 import { useProject } from "../../../../hooks/useProject";
 import { resolveSessionTitle } from "../../../../services/firstCommandToTitle";
 import { sessionProcessesAtom } from "../../store/sessionProcessesAtom";
+
+// ── compact benchmark display for session rows ──────────────────────────────
+
+const ratingConfig = {
+  strong: {
+    labelId: "benchmark.strong",
+    className: "bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30",
+  },
+  possible: {
+    labelId: "benchmark.possible",
+    className: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-500/30",
+  },
+  weak: {
+    labelId: "benchmark.weak",
+    className: "bg-muted text-muted-foreground border-border",
+  },
+} satisfies Record<BenchmarkCandidateScore["overall"], { labelId: string; className: string }>;
+
+const CompactScoreBar: FC<{ value: number }> = ({ value }) => (
+  <div className="h-1 flex-1 rounded-full bg-sidebar-accent overflow-hidden">
+    <div
+      className={cn(
+        "h-full rounded-full",
+        value >= 60 ? "bg-green-500" : value >= 35 ? "bg-yellow-500" : "bg-muted-foreground/40",
+      )}
+      style={{ width: `${value}%` }}
+    />
+  </div>
+);
+
+const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore }> = ({ score }) => {
+  const { labelId, className } = ratingConfig[score.overall];
+  return (
+    <div className="flex items-center gap-1.5">
+      <span
+        className={cn(
+          "inline-flex items-center gap-0.5 rounded border px-1 py-0 text-[10px] font-medium leading-tight",
+          className,
+        )}
+      >
+        <FlaskConical className="h-2.5 w-2.5" />
+        <Trans id={labelId} />
+      </span>
+      <div className="flex items-center gap-1 flex-1 min-w-0">
+        <CompactScoreBar value={score.contextDifficulty} />
+        <CompactScoreBar value={score.verifiability} />
+      </div>
+      {score.driverToolBreakdown.used && (
+        <span
+          className="inline-flex items-center rounded bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/30 px-1 py-0 text-[10px] font-medium leading-tight"
+          title="Driver MCP"
+        >
+          <Trans id="benchmark.driverMcp" />
+        </span>
+      )}
+    </div>
+  );
+};
+
+// ── main component ───────────────────────────────────────────────────────────
 
 export const SessionsTab: FC<{
   currentSessionId: string;
@@ -175,6 +236,11 @@ export const SessionsTab: FC<{
                     </Badge>
                   )}
                 </div>
+                {"benchmarkScore" in session &&
+                  session.benchmarkScore !== undefined &&
+                  session.benchmarkScore !== null && (
+                    <InlineBenchmarkScore score={session.benchmarkScore} />
+                  )}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2 text-xs text-sidebar-foreground/70 min-w-0">
                     <div className="flex items-center gap-1">

@@ -1001,7 +1001,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        125
+        186
       ]
     ],
     "translation": "Start New Chat"
@@ -1219,7 +1219,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        171
+        232
       ]
     ],
     "translation": "Running"
@@ -1238,7 +1238,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        173
+        234
       ]
     ],
     "translation": "Paused"
@@ -1304,7 +1304,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        144
+        151
       ]
     ],
     "translation": "Driver-favorability is measured independently. A session can be a strong candidate even if Driver was not used."
@@ -1315,7 +1315,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        166
+        173
       ]
     ],
     "translation": "Select a session to view benchmark analysis."
@@ -1326,7 +1326,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        176
+        183
       ]
     ],
     "translation": "Analyzing session..."
@@ -1337,7 +1337,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        185
+        192
       ]
     ],
     "translation": "Failed to load benchmark analysis."
@@ -1796,13 +1796,24 @@
     ],
     "translation": "Back to Projects"
   },
+  "benchmark.driverMcp": {
+    "placeholders": {},
+    "comments": [],
+    "origin": [
+      [
+        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
+        72
+      ]
+    ],
+    "translation": "benchmark.driverMcp"
+  },
   "sessions.title": {
     "placeholders": {},
     "comments": [],
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        99
+        160
       ]
     ],
     "translation": "Sessions"
@@ -1817,7 +1828,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        103
+        164
       ]
     ],
     "translation": "Total"
@@ -1836,7 +1847,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        212
+        276
       ]
     ],
     "translation": "Loading..."
@@ -1851,7 +1862,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        214
+        278
       ]
     ],
     "translation": "Load More"
@@ -3839,6 +3850,18 @@
       ]
     ],
     "translation": "Pop"
+  },
+  "benchmark.strong": {
+    "translation": "Strong",
+    "obsolete": true
+  },
+  "benchmark.possible": {
+    "translation": "Possible",
+    "obsolete": true
+  },
+  "benchmark.weak": {
+    "translation": "Weak",
+    "obsolete": true
   },
   "chat.toolbar.permission_mode.accept_edits": {
     "message": "Accept Edits",

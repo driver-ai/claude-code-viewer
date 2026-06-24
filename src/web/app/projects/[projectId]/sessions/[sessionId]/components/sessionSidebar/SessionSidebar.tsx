@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import {
   ArrowLeftIcon,
   CalendarClockIcon,
+  FlaskConicalIcon,
   ListTodoIcon,
   MessageSquareIcon,
   PlugIcon,
@@ -19,6 +20,7 @@ import { useIsSubscriptionMode } from "@/web/hooks/useIsSubscriptionMode";
 import { useLeftPanelActions, useLeftPanelState } from "@/web/hooks/useLayoutPanels";
 import { cn } from "@/web/utils";
 import { Loading } from "../../../../../../../components/Loading";
+import { BenchmarkTab } from "./BenchmarkTab";
 import { McpTab } from "./McpTab";
 import { SchedulerTab } from "./SchedulerTab";
 import type { Tab } from "./schema";
@@ -58,6 +60,16 @@ export const SessionSidebar: FC<{
         icon: ListTodoIcon,
         title: <Trans id="sidebar.show.task.list" />,
         content: <TasksTab projectId={projectId} sessionId={activeSessionId} />,
+      },
+      {
+        id: "benchmark",
+        icon: FlaskConicalIcon,
+        title: <Trans id="sidebar.show.benchmark" />,
+        content: (
+          <Suspense fallback={<Loading />}>
+            <BenchmarkTab projectId={projectId} sessionId={activeSessionId} />
+          </Suspense>
+        ),
       },
       ...(isSubscriptionMode
         ? []

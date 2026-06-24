@@ -188,6 +188,33 @@
   "sidebar.show.task.list": {
     "translation": "タスク一覧を表示"
   },
+  "sidebar.show.benchmark": {
+    "translation": "ベンチマーク分析を表示"
+  },
+  "benchmark.tab.title": {
+    "translation": "ベンチマーク候補"
+  },
+  "benchmark.signals.context": {
+    "translation": "コンテキスト難易度"
+  },
+  "benchmark.signals.verifiability": {
+    "translation": "検証可能性"
+  },
+  "benchmark.signals.driver": {
+    "translation": "Driver MCP"
+  },
+  "benchmark.signals.driver.note": {
+    "translation": "Driver の有用性は独立して測定されます。Driver を使用していなくても強い候補になり得ます。"
+  },
+  "benchmark.loading": {
+    "translation": "セッションを分析中..."
+  },
+  "benchmark.error": {
+    "translation": "ベンチマーク分析の読み込みに失敗しました。"
+  },
+  "benchmark.no_session": {
+    "translation": "セッションを選択してベンチマーク分析を表示してください。"
+  },
   "notification.title": {
     "translation": "通知"
   },

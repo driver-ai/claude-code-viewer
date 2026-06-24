@@ -92,6 +92,17 @@ const projectRoutes = Effect.gen(function* () {
         );
         return response;
       })
+      .get("/:projectId/sessions/:sessionId/benchmark-score", async (c) => {
+        const projectId = c.req.param("projectId");
+        const sessionId = c.req.param("sessionId");
+        const response = await effectToResponse(
+          c,
+          sessionController
+            .getBenchmarkScore({ projectId, sessionId })
+            .pipe(Effect.provide(runtime)),
+        );
+        return response;
+      })
       .get("/:projectId/sessions/:sessionId/export", async (c) => {
         const projectId = c.req.param("projectId");
         const sessionId = c.req.param("sessionId");

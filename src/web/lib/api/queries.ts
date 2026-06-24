@@ -1,3 +1,4 @@
+import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import type { DirectoryListingResult } from "@/server/core/file-system/functions/getDirectoryListing";
 import type { FileCompletionResult } from "@/server/core/file-system/functions/getFileCompletion";
 import type { FileContentResult } from "@/server/core/file-system/functions/getFileContent";
@@ -417,5 +418,24 @@ export const fileContentQuery = (projectId: string, filePath: string) =>
       }
 
       return await response.json();
+    },
+  }) as const;
+
+export const sessionBenchmarkScoreQuery = (projectId: string, sessionId: string) =>
+  ({
+    queryKey: ["projects", projectId, "sessions", sessionId, "benchmark-score"],
+    queryFn: async () => {
+      const response = await honoClient.api.projects[":projectId"].sessions[":sessionId"][
+        "benchmark-score"
+      ].$get({
+        param: { projectId, sessionId },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch benchmark score");
+      }
+
+      const data: { score: BenchmarkCandidateScore } = await response.json();
+      return data;
     },
   }) as const;

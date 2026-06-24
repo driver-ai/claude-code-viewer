@@ -185,6 +185,36 @@
   "sidebar.show.task.list": {
     "translation": "Show Task List"
   },
+  "sidebar.show.benchmark": {
+    "translation": "Show Benchmark Analysis"
+  },
+  "sidebar.tab.benchmark": {
+    "translation": "Benchmark"
+  },
+  "benchmark.tab.title": {
+    "translation": "Benchmark Candidate"
+  },
+  "benchmark.signals.context": {
+    "translation": "Context Difficulty"
+  },
+  "benchmark.signals.verifiability": {
+    "translation": "Verifiability"
+  },
+  "benchmark.signals.driver": {
+    "translation": "Driver MCP"
+  },
+  "benchmark.signals.driver.note": {
+    "translation": "Driver-favorability is measured independently. A session can be a strong candidate even if Driver was not used."
+  },
+  "benchmark.loading": {
+    "translation": "Analyzing session..."
+  },
+  "benchmark.error": {
+    "translation": "Failed to load benchmark analysis."
+  },
+  "benchmark.no_session": {
+    "translation": "Select a session to view benchmark analysis."
+  },
   "notification.title": {
     "translation": "Notifications"
   },

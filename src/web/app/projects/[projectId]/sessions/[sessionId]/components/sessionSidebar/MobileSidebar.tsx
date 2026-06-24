@@ -16,6 +16,7 @@ import {
 import { useIsSubscriptionMode } from "@/web/hooks/useIsSubscriptionMode";
 import { useSwipeGesture } from "@/web/hooks/useSwipeGesture";
 import { cn } from "@/web/utils";
+import { BenchmarkTab } from "./BenchmarkTab";
 import { McpTab } from "./McpTab";
 import { SchedulerTab } from "./SchedulerTab";
 import { tabSchema, type Tab } from "./schema";
@@ -64,6 +65,7 @@ export const MobileSidebar: FC<MobileSidebarProps> = ({
     scheduler: i18n._({ id: "sidebar.tab.scheduler" }),
     settings: i18n._({ id: "sidebar.tab.settings" }),
     "system-info": i18n._({ id: "sidebar.tab.system_info" }),
+    benchmark: i18n._({ id: "sidebar.tab.benchmark" }),
   };
 
   // Sync tab only when initialTab changes (e.g. opened from a specific tab trigger)
@@ -170,6 +172,8 @@ export const MobileSidebar: FC<MobileSidebarProps> = ({
             <SystemInfoCard />
           </Suspense>
         );
+      case "benchmark":
+        return <BenchmarkTab projectId={projectId} sessionId={currentSessionId} />;
       default:
         return null;
     }

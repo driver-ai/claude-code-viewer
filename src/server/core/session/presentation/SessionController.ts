@@ -1,5 +1,6 @@
 import { FileSystem } from "@effect/platform";
 import { Context, Effect, Layer } from "effect";
+import { scoreBenchmarkCandidate } from "../../../../lib/benchmark-candidate/scoreBenchmarkCandidate.ts";
 import type { ControllerResponse } from "../../../lib/effect/toEffectResponse.ts";
 import type { InferEffect } from "../../../lib/effect/types.ts";
 import { AgentSessionRepository } from "../../agent-session/infrastructure/AgentSessionRepository.ts";
@@ -88,10 +89,32 @@ const LayerImpl = Effect.gen(function* () {
       } as const satisfies ControllerResponse;
     });
 
+  const getBenchmarkScore = (options: { projectId: string; sessionId: string }) =>
+    Effect.gen(function* () {
+      const { projectId, sessionId } = options;
+
+      const { session } = yield* sessionRepository.getSession(projectId, sessionId);
+
+      if (session === null) {
+        return {
+          status: 404,
+          response: { error: "Session not found" },
+        } as const satisfies ControllerResponse;
+      }
+
+      const score = scoreBenchmarkCandidate(session.conversations);
+
+      return {
+        status: 200,
+        response: { score },
+      } as const satisfies ControllerResponse;
+    });
+
   return {
     getSession,
     exportSessionHtml,
     deleteSession,
+    getBenchmarkScore,
   };
 });
 

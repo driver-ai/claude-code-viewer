@@ -188,6 +188,33 @@
   "sidebar.show.task.list": {
     "translation": "显示任务列表"
   },
+  "sidebar.show.benchmark": {
+    "translation": "显示基准分析"
+  },
+  "benchmark.tab.title": {
+    "translation": "基准候选"
+  },
+  "benchmark.signals.context": {
+    "translation": "上下文难度"
+  },
+  "benchmark.signals.verifiability": {
+    "translation": "可验证性"
+  },
+  "benchmark.signals.driver": {
+    "translation": "Driver MCP"
+  },
+  "benchmark.signals.driver.note": {
+    "translation": "Driver 的有用性是独立衡量的。即使会话中未使用 Driver，也可以成为强候选。"
+  },
+  "benchmark.loading": {
+    "translation": "正在分析会话..."
+  },
+  "benchmark.error": {
+    "translation": "加载基准分析失败。"
+  },
+  "benchmark.no_session": {
+    "translation": "请选择一个会话以查看基准分析。"
+  },
   "notification.title": {
     "translation": "通知"
   },

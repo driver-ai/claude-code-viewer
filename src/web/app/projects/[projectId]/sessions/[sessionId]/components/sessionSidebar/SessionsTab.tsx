@@ -242,7 +242,7 @@ export const SessionsTab: FC<{
                   session.benchmarkScore !== null && (
                     <InlineBenchmarkScore score={session.benchmarkScore} />
                   )}
-                <div className="flex items-center gap-2 text-xs text-sidebar-foreground/70">
+                <div className="flex items-center gap-2 text-xs text-sidebar-foreground/70 mb-0.5">
                   <div className="flex items-center gap-1" title="Messages">
                     <MessageSquareIcon className="w-3 h-3" />
                     <span>{session.meta.messageCount}</span>
@@ -265,7 +265,10 @@ export const SessionsTab: FC<{
                           </span>
                         )}
                         {session.benchmarkScore.driverToolBreakdown.used && (
-                          <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400" title="Driver MCP calls">
+                          <div
+                            className="flex items-center gap-1 text-blue-600 dark:text-blue-400"
+                            title="Driver MCP calls"
+                          >
                             <WaypointsIcon className="w-3 h-3" />
                             <span>{session.benchmarkScore.driverToolBreakdown.totalCalls}</span>
                           </div>
@@ -274,18 +277,18 @@ export const SessionsTab: FC<{
                     )}
                 </div>
                 <div className="flex items-center justify-between text-[10px] text-sidebar-foreground/50">
+                  {session.meta.cost.totalUsd > 0 && (
+                    <span className="flex items-center gap-0.5 font-mono">
+                      <DollarSignIcon className="w-2.5 h-2.5" />
+                      {session.meta.cost.totalUsd.toFixed(2)}
+                    </span>
+                  )}
                   {session.lastModifiedAt && (
                     <span>
                       {formatLocaleDate(session.lastModifiedAt, {
                         locale: config.locale,
                         target: "time",
                       })}
-                    </span>
-                  )}
-                  {session.meta.cost.totalUsd > 0 && (
-                    <span className="flex items-center gap-0.5 font-mono">
-                      <DollarSignIcon className="w-2.5 h-2.5" />
-                      {session.meta.cost.totalUsd.toFixed(2)}
                     </span>
                   )}
                 </div>

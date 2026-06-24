@@ -55,10 +55,7 @@ const CompactScoreBar: FC<{ value: number }> = ({ value }) => (
   </div>
 );
 
-const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore; timestamp?: string }> = ({
-  score,
-  timestamp,
-}) => {
+const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore }> = ({ score }) => {
   const { label, className } = ratingConfig[score.overall];
   return (
     <div className="flex items-center gap-1.5">
@@ -75,9 +72,6 @@ const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore; timestamp?: str
         <CompactScoreBar value={score.contextDifficulty} />
         <CompactScoreBar value={score.verifiability} />
       </div>
-      {timestamp !== undefined && (
-        <span className="text-[10px] text-sidebar-foreground/50 shrink-0">{timestamp}</span>
-      )}
     </div>
   );
 };
@@ -245,17 +239,7 @@ export const SessionsTab: FC<{
                 {"benchmarkScore" in session &&
                   session.benchmarkScore !== undefined &&
                   session.benchmarkScore !== null && (
-                    <InlineBenchmarkScore
-                      score={session.benchmarkScore}
-                      timestamp={
-                        session.lastModifiedAt
-                          ? formatLocaleDate(session.lastModifiedAt, {
-                              locale: config.locale,
-                              target: "time",
-                            })
-                          : undefined
-                      }
-                    />
+                    <InlineBenchmarkScore score={session.benchmarkScore} />
                   )}
                 <div className="flex items-center gap-2 text-xs text-sidebar-foreground/70">
                   <div className="flex items-center gap-1" title="Messages">
@@ -287,15 +271,15 @@ export const SessionsTab: FC<{
                         )}
                       </>
                     )}
-                  {!("benchmarkScore" in session) && session.lastModifiedAt && (
-                    <span className="ml-auto text-sidebar-foreground/60 shrink-0">
-                      {formatLocaleDate(session.lastModifiedAt, {
-                        locale: config.locale,
-                        target: "time",
-                      })}
-                    </span>
-                  )}
                 </div>
+                {session.lastModifiedAt && (
+                  <span className="text-[10px] text-sidebar-foreground/50">
+                    {formatLocaleDate(session.lastModifiedAt, {
+                      locale: config.locale,
+                      target: "time",
+                    })}
+                  </span>
+                )}
               </div>
             </Link>
           );

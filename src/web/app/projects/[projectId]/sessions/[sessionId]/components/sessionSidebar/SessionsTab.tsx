@@ -55,7 +55,10 @@ const CompactScoreBar: FC<{ value: number }> = ({ value }) => (
   </div>
 );
 
-const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore }> = ({ score }) => {
+const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore; timestamp?: string }> = ({
+  score,
+  timestamp,
+}) => {
   const { labelId, className } = ratingConfig[score.overall];
   return (
     <div className="flex items-center gap-1.5">
@@ -72,6 +75,9 @@ const InlineBenchmarkScore: FC<{ score: BenchmarkCandidateScore }> = ({ score })
         <CompactScoreBar value={score.contextDifficulty} />
         <CompactScoreBar value={score.verifiability} />
       </div>
+      {timestamp !== undefined && (
+        <span className="text-[10px] text-sidebar-foreground/50 shrink-0">{timestamp}</span>
+      )}
     </div>
   );
 };
@@ -239,42 +245,50 @@ export const SessionsTab: FC<{
                 {"benchmarkScore" in session &&
                   session.benchmarkScore !== undefined &&
                   session.benchmarkScore !== null && (
-                    <InlineBenchmarkScore score={session.benchmarkScore} />
+                    <InlineBenchmarkScore
+                      score={session.benchmarkScore}
+                      timestamp={
+                        session.lastModifiedAt
+                          ? formatLocaleDate(session.lastModifiedAt, {
+                              locale: config.locale,
+                              target: "time",
+                            })
+                          : undefined
+                      }
+                    />
                   )}
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-xs text-sidebar-foreground/70 min-w-0">
-                    <div className="flex items-center gap-1" title="Messages">
-                      <MessageSquareIcon className="w-3 h-3" />
-                      <span>{session.meta.messageCount}</span>
-                    </div>
-                    {"benchmarkScore" in session &&
-                      session.benchmarkScore !== undefined &&
-                      session.benchmarkScore !== null && (
-                        <>
-                          <div className="flex items-center gap-1" title="Turns">
-                            <RepeatIcon className="w-3 h-3" />
-                            <span>{session.benchmarkScore.signals.totalAssistantTurns}</span>
-                          </div>
-                          <div className="flex items-center gap-1" title="Files read">
-                            <FileTextIcon className="w-3 h-3" />
-                            <span>{session.benchmarkScore.signals.distinctFilesRead}</span>
-                          </div>
-                          {session.benchmarkScore.signals.hasCommitOrPush && (
-                            <span title="Committed / pushed">
-                              <GitCommitHorizontalIcon className="w-3 h-3 text-green-600 dark:text-green-400" />
-                            </span>
-                          )}
-                          {session.benchmarkScore.driverToolBreakdown.used && (
-                            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400" title="Driver MCP calls">
-                              <WaypointsIcon className="w-3 h-3" />
-                              <span>{session.benchmarkScore.driverToolBreakdown.totalCalls}</span>
-                            </div>
-                          )}
-                        </>
-                      )}
+                <div className="flex items-center gap-2 text-xs text-sidebar-foreground/70">
+                  <div className="flex items-center gap-1" title="Messages">
+                    <MessageSquareIcon className="w-3 h-3" />
+                    <span>{session.meta.messageCount}</span>
                   </div>
-                  {session.lastModifiedAt && (
-                    <span className="text-xs text-sidebar-foreground/60 shrink-0">
+                  {"benchmarkScore" in session &&
+                    session.benchmarkScore !== undefined &&
+                    session.benchmarkScore !== null && (
+                      <>
+                        <div className="flex items-center gap-1" title="Turns">
+                          <RepeatIcon className="w-3 h-3" />
+                          <span>{session.benchmarkScore.signals.totalAssistantTurns}</span>
+                        </div>
+                        <div className="flex items-center gap-1" title="Files read">
+                          <FileTextIcon className="w-3 h-3" />
+                          <span>{session.benchmarkScore.signals.distinctFilesRead}</span>
+                        </div>
+                        {session.benchmarkScore.signals.hasCommitOrPush && (
+                          <span title="Committed / pushed">
+                            <GitCommitHorizontalIcon className="w-3 h-3 text-green-600 dark:text-green-400" />
+                          </span>
+                        )}
+                        {session.benchmarkScore.driverToolBreakdown.used && (
+                          <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400" title="Driver MCP calls">
+                            <WaypointsIcon className="w-3 h-3" />
+                            <span>{session.benchmarkScore.driverToolBreakdown.totalCalls}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  {!("benchmarkScore" in session) && session.lastModifiedAt && (
+                    <span className="ml-auto text-sidebar-foreground/60 shrink-0">
                       {formatLocaleDate(session.lastModifiedAt, {
                         locale: config.locale,
                         target: "time",

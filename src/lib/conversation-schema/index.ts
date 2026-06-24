@@ -7,6 +7,7 @@ import { AttachmentEntrySchema } from "./entry/AttachmentEntrySchema.ts";
 import { CustomTitleEntrySchema } from "./entry/CustomTitleEntrySchema.ts";
 import { FileHistorySnapshotEntrySchema } from "./entry/FileHIstorySnapshotEntrySchema.ts";
 import { LastPromptEntrySchema } from "./entry/LastPromptEntrySchema.ts";
+import { ModeEntrySchema } from "./entry/ModeEntrySchema.ts";
 import { PermissionModeEntrySchema } from "./entry/PermissionModeEntrySchema.ts";
 import { PrLinkEntrySchema } from "./entry/PrLinkEntrySchema.ts";
 import { ProgressEntrySchema } from "./entry/ProgressEntrySchema.ts";
@@ -28,6 +29,7 @@ export const ConversationSchema = z.union([
   AgentNameEntrySchema,
   AgentSettingEntrySchema,
   PermissionModeEntrySchema,
+  ModeEntrySchema,
   PrLinkEntrySchema,
   LastPromptEntrySchema,
   AttachmentEntrySchema,

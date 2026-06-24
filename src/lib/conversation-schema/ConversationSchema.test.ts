@@ -160,4 +160,81 @@ describe("ConversationSchema", () => {
 
     expect(result.success).toBe(true);
   });
+
+  test("accepts mode entries", () => {
+    const result = ConversationSchema.safeParse({
+      type: "mode",
+      mode: "normal",
+      sessionId: "c4f22d6f-a1c3-4c6d-bc0c-d579bba7c067",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  test("accepts synthetic assistant API error messages with null usage fields", () => {
+    const result = ConversationSchema.safeParse({
+      parentUuid: "b86f9c1c-59c8-4783-bfea-6a845ba10f76",
+      isSidechain: false,
+      type: "assistant",
+      uuid: "8d6e6025-3f27-45c7-b3af-5a3d30b6199b",
+      timestamp: "2026-06-05T15:27:50.907Z",
+      message: {
+        id: "96e0743c-24df-49e2-b829-663dc8ee2147",
+        container: null,
+        model: "<synthetic>",
+        role: "assistant",
+        stop_details: null,
+        stop_reason: "stop_sequence",
+        stop_sequence: "",
+        type: "message",
+        usage: {
+          input_tokens: 0,
+          output_tokens: 0,
+          cache_creation_input_tokens: 0,
+          cache_read_input_tokens: 0,
+          server_tool_use: {
+            web_search_requests: 0,
+            web_fetch_requests: 0,
+          },
+          service_tier: null,
+          cache_creation: {
+            ephemeral_1h_input_tokens: 0,
+            ephemeral_5m_input_tokens: 0,
+          },
+          inference_geo: null,
+          iterations: null,
+          speed: null,
+        },
+        content: [
+          {
+            type: "text",
+            text: "API Error: 529 Overloaded. This is a server-side issue, usually temporary — try again in a moment. If it persists, check https://status.claude.com.",
+          },
+        ],
+        context_management: null,
+      },
+      requestId: "req_011CbkLjTE7fi6tSHNffjjph",
+      error: "server_error",
+      isApiErrorMessage: true,
+      apiErrorStatus: 529,
+      userType: "external",
+      entrypoint: "claude-vscode",
+      cwd: "/Users/fangio/Driver/driver-sdlc-projects",
+      sessionId: "c4f22d6f-a1c3-4c6d-bc0c-d579bba7c067",
+      version: "2.1.159",
+      gitBranch: "estate-branch-activity",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  test("accepts last-prompt entries with leafUuid only", () => {
+    const result = ConversationSchema.safeParse({
+      type: "last-prompt",
+      leafUuid: "59e75bfa-4896-4277-b3eb-acdabb3e18ab",
+      sessionId: "c4f22d6f-a1c3-4c6d-bc0c-d579bba7c067",
+    });
+
+    expect(result.success).toBe(true);
+  });
 });

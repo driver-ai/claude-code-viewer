@@ -114,7 +114,7 @@ const getSearchableText = (conversation: Conversation | ErrorJsonl): string => {
   }
 
   if (conversation.type === "last-prompt") {
-    return conversation.lastPrompt;
+    return conversation.lastPrompt ?? conversation.leafUuid ?? "";
   }
 
   return "";
@@ -401,6 +401,7 @@ export const ConversationList: FC<ConversationListProps> = ({
       if (conv.type === "pr-link") return false;
       if (conv.type === "last-prompt") return false;
       if (conv.type === "permission-mode") return false;
+      if (conv.type === "mode") return false;
 
       const isSidechain =
         conv.type !== "summary" &&
@@ -642,6 +643,7 @@ export const ConversationList: FC<ConversationListProps> = ({
       conversation.type !== "pr-link" &&
       conversation.type !== "last-prompt" &&
       conversation.type !== "permission-mode" &&
+      conversation.type !== "mode" &&
       conversation.isSidechain;
 
     return (

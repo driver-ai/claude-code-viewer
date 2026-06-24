@@ -35,9 +35,9 @@ export const AssistantMessageSchema = z.object({
         .optional(),
       output_tokens: z.number(),
       service_tier: z.string().nullable().optional(),
-      inference_geo: z.string().optional(),
-      iterations: z.array(z.unknown()).optional(),
-      speed: z.string().optional(),
+      inference_geo: z.string().nullable().optional(),
+      iterations: z.array(z.unknown()).nullable().optional(),
+      speed: z.string().nullable().optional(),
       server_tool_use: z
         .object({
           web_search_requests: z.number().optional(),

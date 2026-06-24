@@ -31,12 +31,18 @@ export type BenchmarkSignals = {
   readonly hasCrispTaskStatement: boolean;
 };
 
+export type DriverToolBreakdown = {
+  readonly used: boolean;
+  readonly totalCalls: number;
+  readonly toolCounts: Readonly<Record<string, number>>;
+};
+
 export type BenchmarkCandidateScore = {
   readonly contextDifficulty: number;
   readonly verifiability: number;
   readonly overall: "strong" | "possible" | "weak";
   readonly signals: BenchmarkSignals;
-  readonly driverUsage: { readonly used: boolean; readonly toolCalls: number };
+  readonly driverToolBreakdown: DriverToolBreakdown;
 };
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -86,7 +92,7 @@ export const scoreBenchmarkCandidate = (
   const searchToolUseIds = new Set<string>();
   const testRunnerToolUseIds: string[] = [];
 
-  let driverToolCallCount = 0;
+  const driverToolCounts: Record<string, number> = {};
   let searchToolCalls = 0;
   let searchMisses = 0;
   let turnsToFirstEdit = 0;
@@ -157,7 +163,8 @@ export const scoreBenchmarkCandidate = (
 
         // Driver MCP detection
         if (DRIVER_MCP_PATTERN.test(name)) {
-          driverToolCallCount++;
+          const toolName = name.replace(DRIVER_MCP_PATTERN, "");
+          driverToolCounts[toolName] = (driverToolCounts[toolName] ?? 0) + 1;
         }
 
         // Read tracking
@@ -262,14 +269,17 @@ export const scoreBenchmarkCandidate = (
         ? "possible"
         : "weak";
 
+  const driverTotalCalls = Object.values(driverToolCounts).reduce((sum, c) => sum + c, 0);
+
   return {
     contextDifficulty,
     verifiability,
     overall,
     signals,
-    driverUsage: {
-      used: driverToolCallCount > 0,
-      toolCalls: driverToolCallCount,
+    driverToolBreakdown: {
+      used: driverTotalCalls > 0,
+      totalCalls: driverTotalCalls,
+      toolCounts: driverToolCounts,
     },
   };
 };

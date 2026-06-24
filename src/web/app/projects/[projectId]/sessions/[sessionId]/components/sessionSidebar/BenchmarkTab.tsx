@@ -84,7 +84,7 @@ const NumSignal: FC<{ value: number; label: string; suffix?: string }> = ({
 // ── main panel ────────────────────────────────────────────────────────────────
 
 const ScoreDisplay: FC<{ score: BenchmarkCandidateScore }> = ({ score }) => {
-  const { contextDifficulty, verifiability, overall, signals, driverUsage } = score;
+  const { contextDifficulty, verifiability, overall, signals, driverToolBreakdown } = score;
 
   return (
     <div className="space-y-4 p-3">
@@ -138,8 +138,15 @@ const ScoreDisplay: FC<{ score: BenchmarkCandidateScore }> = ({ score }) => {
         <p className="text-xs font-medium text-sidebar-foreground/50 uppercase tracking-wide">
           <Trans id="benchmark.signals.driver" />
         </p>
-        <BoolSignal value={driverUsage.used} label="Driver MCP used in session" />
-        {driverUsage.used && <NumSignal value={driverUsage.toolCalls} label="Driver tool calls" />}
+        <BoolSignal value={driverToolBreakdown.used} label="Driver MCP used in session" />
+        {driverToolBreakdown.used && (
+          <>
+            <NumSignal value={driverToolBreakdown.totalCalls} label="Total Driver calls" />
+            {Object.entries(driverToolBreakdown.toolCounts).map(([tool, count]) => (
+              <NumSignal key={tool} value={count} label={tool} />
+            ))}
+          </>
+        )}
         <p className="text-[10px] leading-snug text-sidebar-foreground/40 pt-1">
           <Trans id="benchmark.signals.driver.note" />
         </p>

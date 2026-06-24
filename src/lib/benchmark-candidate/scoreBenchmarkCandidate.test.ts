@@ -99,8 +99,9 @@ describe("scoreBenchmarkCandidate", () => {
     expect(result.signals.hasCommitOrPush).toBe(false);
     expect(result.signals.hasPrLink).toBe(false);
     expect(result.signals.hasQualityGate).toBe(false);
-    expect(result.driverUsage.used).toBe(false);
-    expect(result.driverUsage.toolCalls).toBe(0);
+    expect(result.driverToolBreakdown.used).toBe(false);
+    expect(result.driverToolBreakdown.totalCalls).toBe(0);
+    expect(result.driverToolBreakdown.toolCounts).toEqual({});
   });
 
   test("trivial one-shot: one read then one write in a single turn → weak", () => {
@@ -285,8 +286,9 @@ describe("scoreBenchmarkCandidate", () => {
     ];
 
     const result = scoreBenchmarkCandidate(conversations);
-    expect(result.driverUsage.used).toBe(true);
-    expect(result.driverUsage.toolCalls).toBe(1);
+    expect(result.driverToolBreakdown.used).toBe(true);
+    expect(result.driverToolBreakdown.totalCalls).toBe(1);
+    expect(result.driverToolBreakdown.toolCounts).toEqual({ gather_task_context: 1 });
   });
 
   test("detects multiple Driver MCP tools with different names", () => {
@@ -309,8 +311,61 @@ describe("scoreBenchmarkCandidate", () => {
     ];
 
     const result = scoreBenchmarkCandidate(conversations);
-    expect(result.driverUsage.used).toBe(true);
-    expect(result.driverUsage.toolCalls).toBe(2);
+    expect(result.driverToolBreakdown.used).toBe(true);
+    expect(result.driverToolBreakdown.totalCalls).toBe(2);
+    expect(result.driverToolBreakdown.toolCounts).toEqual({
+      get_architecture_overview: 1,
+      get_code_map: 1,
+    });
+  });
+
+  test("tracks per-tool counts for multiple calls to the same Driver MCP tool", () => {
+    const tu1 = nextId();
+    const tu2 = nextId();
+    const tu3 = nextId();
+
+    const conversations: readonly ExtendedConversation[] = [
+      makeAssistantEntry([
+        {
+          id: tu1,
+          name: "mcp__driver__gather_task_context",
+          input: { task_description: "task 1" },
+        },
+        {
+          id: tu2,
+          name: "mcp__driver__get_code_map",
+          input: { codebase_name: "my-app", path: "src/" },
+        },
+        {
+          id: tu3,
+          name: "mcp__driver__gather_task_context",
+          input: { task_description: "task 2" },
+        },
+      ]),
+    ];
+
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.driverToolBreakdown.used).toBe(true);
+    expect(result.driverToolBreakdown.totalCalls).toBe(3);
+    expect(result.driverToolBreakdown.toolCounts).toEqual({
+      gather_task_context: 2,
+      get_code_map: 1,
+    });
+  });
+
+  test("no Driver MCP tools → driverToolBreakdown.used is false with empty toolCounts", () => {
+    const tu1 = nextId();
+
+    const conversations: readonly ExtendedConversation[] = [
+      makeAssistantEntry([
+        { id: tu1, name: "Read", input: { file_path: "/src/foo.ts" } },
+      ]),
+    ];
+
+    const result = scoreBenchmarkCandidate(conversations);
+    expect(result.driverToolBreakdown.used).toBe(false);
+    expect(result.driverToolBreakdown.totalCalls).toBe(0);
+    expect(result.driverToolBreakdown.toolCounts).toEqual({});
   });
 
   test("ignores x-error entries gracefully", () => {

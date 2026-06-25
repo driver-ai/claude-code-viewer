@@ -44,6 +44,35 @@ Claude Code Viewer is a web-based Claude Code client focused on **comprehensive 
 - **Claude Code**: v1.0.125 or later
 - **Operating Systems**: macOS and Linux (Windows is not supported)
 
+### Optional: ATIF Export (`logs2atif`)
+
+The **Export to ATIF** action (available from the Benchmark Candidate panel) converts a session's
+log into an [ATIF](https://github.com/harbor-framework/harbor) v1.7 trajectory by shelling out to
+the [`logs2atif`](https://github.com/driver-ai/logs2atif) Python CLI. This feature is optional and
+only needed if you want to export trajectories.
+
+Requirements (any one of the following must be available on the host running Claude Code Viewer):
+
+- **[`uv`](https://docs.astral.sh/uv/) (recommended)** — `logs2atif` is provisioned on demand via
+  `uv tool run` / `uvx`, so no manual install is required. Needs **Python 3.11+** (managed by `uv`).
+  Install `uv` with:
+
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+- **A pre-installed `logs2atif` on `PATH`** — if you prefer to install it yourself (pinned to the
+  branch Claude Code Viewer provisions):
+
+  ```bash
+  uv tool install "git+https://github.com/driver-ai/logs2atif@feature/claude-codex-adapters"
+  ```
+
+Claude Code Viewer resolves the tool in this order: an existing `logs2atif` on `PATH`, then `uvx`,
+then `uv tool run`. If none are found, the export dialog shows the command it attempted along with
+install instructions. The first `uvx`/`uv` run may take a few seconds while the environment is
+provisioned.
+
 ## Installation & Usage
 
 ### Quick Start (CLI)
@@ -172,6 +201,7 @@ Settings can be configured from the sidebar in Claude Code Viewer.
 | Push Changes            | Push committed changes directly from the Git Diff Viewer. Supports both separate push operations and combined commit-and-push workflows for streamlined deployment                                                                                                                                                                                                       |
 | Branch Switcher         | Switch local Git branches directly from the Git tab (with search and status indicators)                                                                                                                                                                                                                                                                                  |
 | Explorer                | Right panel tab that summarizes edited files with action buttons, groups them by project, lists tool invocations with filters and quick file preview, and shows agent sub-sessions in a dedicated section                                                                                                                                                                |
+| Export to ATIF          | Convert a session log into an [ATIF](https://github.com/harbor-framework/harbor) v1.7 trajectory from the Benchmark Candidate panel. Runs the [`logs2atif`](https://github.com/driver-ai/logs2atif) CLI (provisioned via `uv`), shows the executed command and its output in a dialog, and offers the resulting `.atif.json` for download. Requires `uv` or `logs2atif` (see System Requirements) |
 | Visual Tool Display     | Tool invocations render with dedicated visual components (e.g. file diffs, structured outputs). A Raw toggle switches to the plain JSON view when needed                                                                                                                                                                                                                 |
 | Todo Viewer             | Extracts the latest `TodoWrite` items from sessions and displays them as inline collapsible checklists directly within the conversation                                                                                                                                                                                                                                  |
 | PR Link Display         | Pull request metadata (title, number, URL) from `pr-link` log entries is rendered as a rich card in the conversation, making it easy to navigate to associated PRs                                                                                                                                                                                                       |

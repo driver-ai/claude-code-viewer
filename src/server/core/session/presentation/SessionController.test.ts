@@ -8,6 +8,7 @@ import { AgentSessionRepository } from "../../agent-session/infrastructure/Agent
 import { EventBus, type IEventBus } from "../../events/services/EventBus.ts";
 import type { InternalEventDeclaration } from "../../events/types/InternalEventDeclaration.ts";
 import { SessionRepository } from "../infrastructure/SessionRepository.ts";
+import { Logs2AtifService } from "../services/Logs2AtifService.ts";
 import { SessionMetaService } from "../services/SessionMetaService.ts";
 import { SessionController } from "./SessionController.ts";
 
@@ -84,6 +85,16 @@ describe("SessionController", () => {
         invalidateSession: () => Effect.void,
       });
 
+      const logs2AtifServiceLayer = Layer.succeed(Logs2AtifService, {
+        convert: () =>
+          Effect.succeed({
+            command: "logs2atif session.jsonl /tmp/out --pricing builtin",
+            output: "INFO logs2atif: Done: ok=1",
+            content: "{}",
+            exitCode: 0,
+          }),
+      });
+
       const eventBusLayer = Layer.succeed(EventBus, {
         emit: <EventName extends keyof InternalEventDeclaration>(
           event: EventName,
@@ -106,6 +117,7 @@ describe("SessionController", () => {
           sessionMetaServiceLayer,
           eventBusLayer,
           agentSessionRepositoryLayer,
+          logs2AtifServiceLayer,
         ),
       };
     };

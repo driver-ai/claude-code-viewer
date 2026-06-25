@@ -35,12 +35,14 @@ import { honoClient } from "@/web/lib/api/client";
 import { cn } from "@/web/utils";
 import { useProject } from "../../../hooks/useProject";
 import { resolveSessionTitle } from "../../../services/firstCommandToTitle";
+import { useExportAtif } from "../hooks/useExportAtif";
 import { useExportSession } from "../hooks/useExportSession";
 import { useGitCurrentRevisions } from "../hooks/useGit";
 import { useSession } from "../hooks/useSession";
 import { useSessionProcess } from "../hooks/useSessionProcess";
 import { sessionProcessesAtom } from "../store/sessionProcessesAtom";
 import { ConversationList } from "./conversationList/ConversationList";
+import { ExportAtifDialog } from "./ExportAtifDialog";
 import { ChatActionMenu } from "./resumeChat/ChatActionMenu";
 import { ContinueChat } from "./resumeChat/ContinueChat";
 import { ResumeChat } from "./resumeChat/ResumeChat";
@@ -105,6 +107,7 @@ const SessionPageMainContent: FC<
     revisionsData?.success === true ? revisionsData.data.currentBranch?.name : undefined;
   const hasCurrentBranch = currentBranch !== undefined && currentBranch !== "";
   const exportSession = useExportSession();
+  const exportAtif = useExportAtif();
   const { data: allSchedulerJobs } = useSchedulerJobs();
   const { data: projectData } = useProject(projectId);
   const sessionProcesses = useAtomValue(sessionProcessesAtom);
@@ -221,6 +224,7 @@ const SessionPageMainContent: FC<
 
   const [previousConversationLength, setPreviousConversationLength] = useState(0);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isAtifDialogOpen, setIsAtifDialogOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const scrollSettleRafIdRef = useRef<number | null>(null);
   const isNearBottomRef = useRef(true);
@@ -490,10 +494,28 @@ const SessionPageMainContent: FC<
                           variant="ghost"
                           size="sm"
                           className="justify-start"
-                          onClick={handleExportJsonl}
+                          onClick={() => {
+                            void handleExportJsonl();
+                          }}
                         >
                           <DownloadIcon className="w-4 h-4 mr-2" />
                           <Trans id="session.menu.export_jsonl" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="justify-start"
+                          onClick={() => {
+                            setIsAtifDialogOpen(true);
+                            exportAtif.reset();
+                            exportAtif.mutate({ projectId, sessionId });
+                          }}
+                          disabled={exportAtif.isPending}
+                        >
+                          <DownloadIcon
+                            className={`w-4 h-4 mr-2 ${exportAtif.isPending ? "animate-pulse" : ""}`}
+                          />
+                          Export to ATIF
                         </Button>
                         {sessionData?.session.jsonlFilePath !== undefined &&
                           sessionData.session.jsonlFilePath !== "" && (
@@ -830,6 +852,14 @@ const SessionPageMainContent: FC<
           )}
         </div>
       </div>
+
+      <ExportAtifDialog
+        open={isAtifDialogOpen}
+        onOpenChange={setIsAtifDialogOpen}
+        isPending={exportAtif.isPending}
+        error={exportAtif.error}
+        result={exportAtif.data}
+      />
 
       {isExistingSession && (
         <DeleteSessionDialog

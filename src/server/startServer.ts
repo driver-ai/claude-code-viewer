@@ -37,6 +37,7 @@ import { SearchController } from "./core/search/presentation/SearchController.ts
 import { SearchService } from "./core/search/services/SearchService.ts";
 import { SessionRepository } from "./core/session/infrastructure/SessionRepository.ts";
 import { SessionController } from "./core/session/presentation/SessionController.ts";
+import { Logs2AtifService } from "./core/session/services/Logs2AtifService.ts";
 import { SessionMetaService } from "./core/session/services/SessionMetaService.ts";
 import { SyncService } from "./core/sync/services/SyncService.ts";
 import { TasksController } from "./core/tasks/presentation/TasksController.ts";
@@ -151,6 +152,7 @@ const DomainBase = Layer.mergeAll(
   ClaudeCodeSessionProcessService.Live,
   ClaudeCodeService.Live,
   GitService.Live,
+  Logs2AtifService.Live,
   NotificationService.Live,
   SchedulerService.Live,
   SchedulerConfigBaseDir.Live,

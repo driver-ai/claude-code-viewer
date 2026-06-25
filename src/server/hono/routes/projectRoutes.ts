@@ -125,6 +125,17 @@ const projectRoutes = Effect.gen(function* () {
         );
         return response;
       })
+      .get("/:projectId/sessions/:sessionId/export-atif", async (c) => {
+        const projectId = c.req.param("projectId");
+        const sessionId = c.req.param("sessionId");
+        const response = await effectToResponse(
+          c,
+          sessionController
+            .exportSessionAtif({ projectId, sessionId })
+            .pipe(Effect.provide(runtime)),
+        );
+        return response;
+      })
       .delete("/:projectId/sessions/:sessionId", async (c) => {
         const projectId = c.req.param("projectId");
         const sessionId = c.req.param("sessionId");

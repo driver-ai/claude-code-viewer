@@ -536,7 +536,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        192
+        218
       ]
     ],
     "translation": "加载基准分析失败。"
@@ -547,7 +547,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        183
+        209
       ]
     ],
     "translation": "正在分析会话..."
@@ -558,7 +558,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        173
+        199
       ]
     ],
     "translation": "请选择一个会话以查看基准分析。"
@@ -569,7 +569,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        37
+        38
       ]
     ],
     "translation": "可能"
@@ -580,7 +580,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        109
+        135
       ]
     ],
     "translation": "上下文难度"
@@ -591,7 +591,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        139
+        165
       ]
     ],
     "translation": "Driver MCP"
@@ -602,7 +602,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        151
+        177
       ]
     ],
     "translation": "Driver 的有用性是独立衡量的。即使会话中未使用 Driver，也可以成为强候选。"
@@ -613,7 +613,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        125
+        151
       ]
     ],
     "translation": "可验证性"
@@ -624,7 +624,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        33
+        34
       ]
     ],
     "translation": "强"
@@ -635,7 +635,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        93
+        109
       ]
     ],
     "translation": "基准候选"
@@ -646,7 +646,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        41
+        42
       ]
     ],
     "translation": "弱"
@@ -733,7 +733,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        700
+        716
       ]
     ],
     "translation": "最近会话"
@@ -748,15 +748,15 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        418
+        420
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        688
+        704
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        192
+        187
       ]
     ],
     "translation": "开始新对话"
@@ -1263,7 +1263,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        317
+        313
       ]
     ],
     "translation": "加载中..."
@@ -1308,7 +1308,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        545
+        561
       ]
     ],
     "translation": "分支"
@@ -1319,7 +1319,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        526
+        542
       ]
     ],
     "translation": "元数据"
@@ -1330,7 +1330,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        572
+        588
       ]
     ],
     "translation": "模型"
@@ -1364,7 +1364,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        532
+        548
       ]
     ],
     "translation": "项目路径"
@@ -1399,7 +1399,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        559
+        575
       ]
     ],
     "translation": "会话 ID"
@@ -3238,7 +3238,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        626
+        642
       ]
     ],
     "translation": "缓存创建"
@@ -3249,7 +3249,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        640
+        656
       ]
     ],
     "translation": "缓存读取"
@@ -3260,7 +3260,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        598
+        614
       ]
     ],
     "translation": "输入令牌"
@@ -3271,7 +3271,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        585
+        601
       ]
     ],
     "translation": "会话成本"
@@ -3282,7 +3282,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        612
+        628
       ]
     ],
     "translation": "输出令牌"
@@ -3293,7 +3293,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        592
+        608
       ]
     ],
     "translation": "总计"
@@ -3343,7 +3343,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        519
+        535
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/DeleteSessionDialog.tsx",
@@ -3362,7 +3362,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        691
+        707
       ]
     ],
     "translation": "开始新对话以展开交流"
@@ -3373,7 +3373,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        509
+        525
       ]
     ],
     "translation": "复制会话文件路径"
@@ -3384,7 +3384,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        487
+        489
       ]
     ],
     "translation": "导出为 HTML"
@@ -3395,7 +3395,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        496
+        500
       ]
     ],
     "translation": "导出为 JSONL"
@@ -3406,7 +3406,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        780
+        796
       ]
     ],
     "translation": "Claude Code 正在处理..."
@@ -3454,11 +3454,11 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        745
+        761
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        240
+        235
       ]
     ],
     "translation": "已暂停"
@@ -3473,11 +3473,11 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        743
+        759
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        238
+        233
       ]
     ],
     "translation": "运行中"
@@ -3492,7 +3492,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        319
+        315
       ]
     ],
     "translation": "加载更多"
@@ -3503,7 +3503,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        166
+        161
       ]
     ],
     "translation": "会话"
@@ -3518,7 +3518,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
-        170
+        165
       ]
     ],
     "translation": "总计"

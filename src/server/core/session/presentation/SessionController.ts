@@ -1,5 +1,5 @@
 import { FileSystem } from "@effect/platform";
-import { Context, Effect, Layer } from "effect";
+import { Context, Effect, Either, Layer } from "effect";
 import { scoreBenchmarkCandidate } from "../../../../lib/benchmark-candidate/scoreBenchmarkCandidate.ts";
 import type { ControllerResponse } from "../../../lib/effect/toEffectResponse.ts";
 import type { InferEffect } from "../../../lib/effect/types.ts";
@@ -8,12 +8,14 @@ import { EventBus } from "../../events/services/EventBus.ts";
 import { SessionRepository } from "../../session/infrastructure/SessionRepository.ts";
 import { decodeSessionId } from "../functions/id.ts";
 import { generateSessionHtml } from "../services/ExportService.ts";
+import { Logs2AtifNotAvailableError, Logs2AtifService } from "../services/Logs2AtifService.ts";
 
 const LayerImpl = Effect.gen(function* () {
   const sessionRepository = yield* SessionRepository;
   const agentSessionRepository = yield* AgentSessionRepository;
   const fs = yield* FileSystem.FileSystem;
   const eventBus = yield* EventBus;
+  const logs2AtifService = yield* Logs2AtifService;
 
   const getSession = (options: { projectId: string; sessionId: string }) =>
     Effect.gen(function* () {
@@ -109,6 +111,49 @@ const LayerImpl = Effect.gen(function* () {
       } as const satisfies ControllerResponse;
     });
 
+  const exportSessionAtif = (options: { projectId: string; sessionId: string }) =>
+    Effect.gen(function* () {
+      const { projectId, sessionId } = options;
+      const sessionPath = decodeSessionId(projectId, sessionId);
+
+      const exists = yield* fs.exists(sessionPath);
+      if (!exists) {
+        return {
+          status: 404,
+          response: { error: "Session not found" },
+        } as const satisfies ControllerResponse;
+      }
+
+      const result = yield* Effect.either(logs2AtifService.convert(sessionPath));
+
+      if (Either.isLeft(result)) {
+        const error = result.left;
+        if (error instanceof Logs2AtifNotAvailableError) {
+          return {
+            status: 501,
+            response: { error: error.message },
+          } as const satisfies ControllerResponse;
+        }
+
+        return {
+          status: 500,
+          response: { error: `Failed to convert session to ATIF: ${error.message}` },
+        } as const satisfies ControllerResponse;
+      }
+
+      const { command, output, content, exitCode } = result.right;
+      return {
+        status: 200,
+        response: {
+          command,
+          output,
+          content,
+          exitCode,
+          filename: `${sessionId}.atif.json`,
+        },
+      } as const satisfies ControllerResponse;
+    });
+
   const getBenchmarkScore = (options: { projectId: string; sessionId: string }) =>
     Effect.gen(function* () {
       const { projectId, sessionId } = options;
@@ -134,6 +179,7 @@ const LayerImpl = Effect.gen(function* () {
     getSession,
     exportSessionHtml,
     exportSessionJsonl,
+    exportSessionAtif,
     deleteSession,
     getBenchmarkScore,
   };

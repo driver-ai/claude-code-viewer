@@ -188,12 +188,6 @@
   "sidebar.show.task.list": {
     "translation": "Show Task List"
   },
-  "sidebar.show.benchmark": {
-    "translation": "Show Benchmark Analysis"
-  },
-  "sidebar.tab.benchmark": {
-    "translation": "Benchmark"
-  },
   "benchmark.tab.title": {
     "translation": "Benchmark Candidate"
   },

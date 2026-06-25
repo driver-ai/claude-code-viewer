@@ -27,7 +27,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        231
+        227
       ]
     ],
     "translation": "Close Sidebar"
@@ -146,7 +146,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        220
+        216
       ]
     ],
     "translation": "New Chat"
@@ -536,7 +536,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        218
+        267
       ]
     ],
     "translation": "Failed to load benchmark analysis."
@@ -547,7 +547,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        209
+        258
       ]
     ],
     "translation": "Analyzing session..."
@@ -558,7 +558,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        199
+        248
       ]
     ],
     "translation": "Select a session to view benchmark analysis."
@@ -580,7 +580,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        135
+        182
       ]
     ],
     "translation": "Context Difficulty"
@@ -591,7 +591,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        165
+        212
       ]
     ],
     "translation": "Driver MCP"
@@ -602,7 +602,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        177
+        224
       ]
     ],
     "translation": "Driver-favorability is measured independently. A session can be a strong candidate even if Driver was not used."
@@ -613,7 +613,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        151
+        198
       ]
     ],
     "translation": "Verifiability"
@@ -635,7 +635,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/BenchmarkTab.tsx",
-        109
+        156
       ]
     ],
     "translation": "Benchmark Candidate"
@@ -733,7 +733,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        716
+        722
       ]
     ],
     "translation": "Recent sessions"
@@ -748,11 +748,11 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        420
+        422
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        704
+        710
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
@@ -1308,7 +1308,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        561
+        567
       ]
     ],
     "translation": "Branch"
@@ -1319,7 +1319,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        542
+        548
       ]
     ],
     "translation": "Metadata"
@@ -1330,7 +1330,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        588
+        594
       ]
     ],
     "translation": "Model"
@@ -1364,7 +1364,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        548
+        554
       ]
     ],
     "translation": "Project Path"
@@ -1399,7 +1399,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        575
+        581
       ]
     ],
     "translation": "Session ID"
@@ -3238,7 +3238,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        642
+        648
       ]
     ],
     "translation": "Cache creation"
@@ -3249,7 +3249,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        656
+        662
       ]
     ],
     "translation": "Cache read"
@@ -3260,7 +3260,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        614
+        620
       ]
     ],
     "translation": "Input tokens"
@@ -3271,7 +3271,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        601
+        607
       ]
     ],
     "translation": "Session Cost"
@@ -3282,7 +3282,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        628
+        634
       ]
     ],
     "translation": "Output tokens"
@@ -3293,7 +3293,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        608
+        614
       ]
     ],
     "translation": "Total"
@@ -3343,7 +3343,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        535
+        541
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/DeleteSessionDialog.tsx",
@@ -3362,7 +3362,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        707
+        713
       ]
     ],
     "translation": "Start a new chat to begin the conversation"
@@ -3373,7 +3373,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        525
+        531
       ]
     ],
     "translation": "Copy session file path"
@@ -3384,7 +3384,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        489
+        491
       ]
     ],
     "translation": "Export to HTML"
@@ -3395,7 +3395,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        500
+        502
       ]
     ],
     "translation": "Export to JSONL"
@@ -3406,7 +3406,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        796
+        802
       ]
     ],
     "translation": "Claude Code is processing..."
@@ -3454,7 +3454,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        761
+        767
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
@@ -3473,7 +3473,7 @@
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/SessionPageMain.tsx",
-        759
+        765
       ],
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionsTab.tsx",
@@ -3729,7 +3729,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        140
+        138
       ],
       [
         "src/web/components/GlobalSidebar.tsx",
@@ -3871,7 +3871,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        155
+        153
       ]
     ],
     "translation": "Notifications"
@@ -4009,7 +4009,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        148
+        146
       ]
     ],
     "translation": "Session Display"
@@ -4230,7 +4230,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionSidebar.tsx",
-        107
+        95
       ]
     ],
     "translation": "Back to Projects"
@@ -4298,24 +4298,13 @@
     ],
     "translation": "Edited Files"
   },
-  "sidebar.show.benchmark": {
-    "placeholders": {},
-    "comments": [],
-    "origin": [
-      [
-        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionSidebar.tsx",
-        67
-      ]
-    ],
-    "translation": "Show Benchmark Analysis"
-  },
   "sidebar.show.mcp.settings": {
     "placeholders": {},
     "comments": [],
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionSidebar.tsx",
-        55
+        53
       ]
     ],
     "translation": "Show MCP Server Settings"
@@ -4326,7 +4315,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionSidebar.tsx",
-        80
+        68
       ]
     ],
     "translation": "Show Scheduler Jobs"
@@ -4337,7 +4326,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionSidebar.tsx",
-        45
+        43
       ]
     ],
     "translation": "Show Session List"
@@ -4348,21 +4337,10 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/SessionSidebar.tsx",
-        61
+        59
       ]
     ],
     "translation": "Show task list"
-  },
-  "sidebar.tab.benchmark": {
-    "placeholders": {},
-    "comments": [],
-    "origin": [
-      [
-        "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        68
-      ]
-    ],
-    "translation": "Benchmark"
   },
   "sidebar.tab.mcp": {
     "placeholders": {},
@@ -4370,7 +4348,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        63
+        62
       ]
     ],
     "translation": "MCP"
@@ -4382,7 +4360,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        199
+        195
       ]
     ],
     "translation": "Projects"
@@ -4393,7 +4371,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        65
+        64
       ]
     ],
     "translation": "Scheduler"
@@ -4404,7 +4382,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        62
+        61
       ]
     ],
     "translation": "Sessions"
@@ -4415,7 +4393,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        66
+        65
       ]
     ],
     "translation": "Settings"
@@ -4426,7 +4404,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        67
+        66
       ]
     ],
     "translation": "System Info"
@@ -4437,7 +4415,7 @@
     "origin": [
       [
         "src/web/app/projects/[projectId]/sessions/[sessionId]/components/sessionSidebar/MobileSidebar.tsx",
-        64
+        63
       ]
     ],
     "translation": "Tasks"

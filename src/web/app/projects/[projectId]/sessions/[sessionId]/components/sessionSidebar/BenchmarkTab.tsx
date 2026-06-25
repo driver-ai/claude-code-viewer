@@ -1,10 +1,20 @@
 import { Trans } from "@lingui/react";
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, DollarSignIcon, FlaskConical, Loader2, XCircle } from "lucide-react";
-import type { FC } from "react";
+import {
+  CheckCircle2,
+  DollarSignIcon,
+  DownloadIcon,
+  FlaskConical,
+  Loader2,
+  XCircle,
+} from "lucide-react";
+import { type FC, useState } from "react";
 import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
+import { Button } from "@/web/components/ui/button";
 import { sessionBenchmarkScoreQuery } from "@/web/lib/api/queries";
 import { cn } from "@/web/utils";
+import { useExportAtif } from "../../hooks/useExportAtif";
+import { ExportAtifDialog } from "../ExportAtifDialog";
 
 // ── sub-components ────────────────────────────────────────────────────────────
 
@@ -96,10 +106,47 @@ type SessionCost = {
 const formatUsd = (value: number): string =>
   value < 0.01 && value > 0 ? "<$0.01" : `$${value.toFixed(2)}`;
 
-const ScoreDisplay: FC<{ score: BenchmarkCandidateScore; cost?: SessionCost }> = ({
-  score,
-  cost,
+const ExportAtifButton: FC<{ projectId: string; sessionId: string }> = ({
+  projectId,
+  sessionId,
 }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const exportAtif = useExportAtif();
+
+  return (
+    <>
+      <hr className="border-border" />
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full"
+        onClick={() => {
+          setIsDialogOpen(true);
+          exportAtif.reset();
+          exportAtif.mutate({ projectId, sessionId });
+        }}
+        disabled={exportAtif.isPending}
+      >
+        <DownloadIcon className={cn("w-4 h-4 mr-2", exportAtif.isPending && "animate-pulse")} />
+        Export to ATIF
+      </Button>
+      <ExportAtifDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        isPending={exportAtif.isPending}
+        error={exportAtif.error}
+        result={exportAtif.data}
+      />
+    </>
+  );
+};
+
+const ScoreDisplay: FC<{
+  score: BenchmarkCandidateScore;
+  cost?: SessionCost;
+  projectId: string;
+  sessionId: string;
+}> = ({ score, cost, projectId, sessionId }) => {
   const { contextDifficulty, verifiability, overall, signals, driverToolBreakdown } = score;
 
   return (
@@ -177,6 +224,8 @@ const ScoreDisplay: FC<{ score: BenchmarkCandidateScore; cost?: SessionCost }> =
           <Trans id="benchmark.signals.driver.note" />
         </p>
       </div>
+
+      {sessionId !== "" && <ExportAtifButton projectId={projectId} sessionId={sessionId} />}
     </div>
   );
 };
@@ -220,5 +269,7 @@ export const BenchmarkTab: FC<{ projectId: string; sessionId: string }> = ({
     );
   }
 
-  return <ScoreDisplay score={data.score} cost={data.cost} />;
+  return (
+    <ScoreDisplay score={data.score} cost={data.cost} projectId={projectId} sessionId={sessionId} />
+  );
 };

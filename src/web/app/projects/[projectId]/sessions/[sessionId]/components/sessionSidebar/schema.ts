@@ -7,7 +7,6 @@ export const tabSchema = z.enum([
   "scheduler",
   "settings",
   "system-info",
-  "benchmark",
 ]);
 
 export type Tab = z.infer<typeof tabSchema>;

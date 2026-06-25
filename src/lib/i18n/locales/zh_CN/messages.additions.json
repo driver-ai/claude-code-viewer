@@ -191,9 +191,6 @@
   "sidebar.show.task.list": {
     "translation": "显示任务列表"
   },
-  "sidebar.show.benchmark": {
-    "translation": "显示基准分析"
-  },
   "benchmark.tab.title": {
     "translation": "基准候选"
   },

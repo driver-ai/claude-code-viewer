@@ -191,9 +191,6 @@
   "sidebar.show.task.list": {
     "translation": "タスク一覧を表示"
   },
-  "sidebar.show.benchmark": {
-    "translation": "ベンチマーク分析を表示"
-  },
   "benchmark.tab.title": {
     "translation": "ベンチマーク候補"
   },

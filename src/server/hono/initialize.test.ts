@@ -71,6 +71,7 @@ const allDependencies = Layer.mergeAll(
       projectName: "Test Project",
       projectPath: "/path/to/project",
       sessionCount: 0,
+      source: "claude-code",
     },
   }),
   testSessionMetaServiceLayer({
@@ -107,6 +108,7 @@ describe("InitializeService", () => {
                   projectName: "Project 1",
                   projectPath: "/path/to/project-1",
                   sessionCount: 2,
+                  source: "claude-code",
                 },
               },
             ],

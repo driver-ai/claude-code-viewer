@@ -11,6 +11,7 @@ export const testProjectMetaServiceLayer = (options?: {
       projectName: null,
       projectPath: null,
       sessionCount: 0,
+      source: "claude-code",
     },
     invalidateProject = () => Effect.void,
   } = options ?? {};

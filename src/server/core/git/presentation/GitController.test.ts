@@ -18,6 +18,7 @@ const makeNullProjectPathLayer = () => {
           projectName: "Test Project",
           projectPath: null, // No project path
           sessionCount: 0,
+          source: "claude-code",
         },
       },
     ],

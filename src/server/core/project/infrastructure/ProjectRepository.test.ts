@@ -53,6 +53,7 @@ describe("ProjectRepository", () => {
         projectName: "Test Project",
         projectPath: "/workspace",
         sessionCount: 5,
+        source: "claude-code",
       };
 
       const FileSystemMock = testFileSystemLayer({
@@ -95,6 +96,7 @@ describe("ProjectRepository", () => {
         projectName: null,
         projectPath: null,
         sessionCount: 0,
+        source: "claude-code",
       };
 
       const FileSystemMock = testFileSystemLayer({
@@ -137,6 +139,7 @@ describe("ProjectRepository", () => {
         projectName: null,
         projectPath: null,
         sessionCount: 0,
+        source: "claude-code",
       };
 
       return Effect.gen(function* () {
@@ -189,6 +192,7 @@ describe("ProjectRepository", () => {
         projectName: "project",
         projectPath: "/test/project",
         sessionCount: 1,
+        source: "claude-code",
       };
 
       return Effect.gen(function* () {
@@ -218,6 +222,7 @@ describe("ProjectRepository", () => {
         projectName: "project",
         projectPath: "/test/project",
         sessionCount: 0,
+        source: "claude-code",
       };
 
       return Effect.gen(function* () {
@@ -244,6 +249,7 @@ describe("ProjectRepository", () => {
         projectName: null,
         projectPath: null,
         sessionCount: 0,
+        source: "claude-code",
       };
 
       return Effect.gen(function* () {

@@ -15,6 +15,7 @@ const rowToProjectMeta = (row: ProjectRow, baseName: string): ProjectMeta => {
     projectName,
     projectPath,
     sessionCount: row.sessionCount,
+    source: row.source ?? "claude-code",
   };
 };
 

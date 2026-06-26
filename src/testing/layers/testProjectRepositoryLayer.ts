@@ -10,6 +10,7 @@ export const testProjectRepositoryLayer = (options?: {
       projectName: string | null;
       projectPath: string | null;
       sessionCount: number;
+      source: string;
     };
   }>;
 }) => {

@@ -9,6 +9,7 @@ export const projects = sqliteTable("projects", {
   name: text("name"),
   path: text("path"),
   sessionCount: integer("session_count").notNull().default(0),
+  source: text("source").notNull().default("claude-code"),
   dirMtimeMs: integer("dir_mtime_ms").notNull(),
   syncedAt: integer("synced_at").notNull(),
 });
@@ -33,6 +34,7 @@ export const sessions = sqliteTable(
     tokenUsageJson: text("token_usage_json"),
     modelName: text("model_name"),
     prLinksJson: text("pr_links_json"),
+    source: text("source").notNull().default("claude-code"),
     fileMtimeMs: integer("file_mtime_ms").notNull(),
     lastModifiedAt: text("last_modified_at").notNull(),
     syncedAt: integer("synced_at").notNull(),

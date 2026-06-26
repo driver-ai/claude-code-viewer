@@ -160,6 +160,7 @@ describe("RateLimitAutoScheduleService", () => {
             projectName: "test-project",
             projectPath: "/test/project",
             sessionCount: 1,
+            source: "claude-code",
           },
         },
       }),

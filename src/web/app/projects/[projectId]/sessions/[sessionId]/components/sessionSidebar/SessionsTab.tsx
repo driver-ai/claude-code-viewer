@@ -93,6 +93,8 @@ export const SessionsTab: FC<{
   const sessionProcesses = useAtomValue(sessionProcessesAtom);
   const virtualMessages = useAtomValue(virtualMessagesAtom);
 
+  const projectSource = projectData.pages[0]?.project.meta.source ?? "claude-code";
+
   const sessions = useMemo(() => {
     const serverSessions = projectData.pages.flatMap((page) => page.sessions);
     const existingIds = new Set(serverSessions.map((s) => s.id));
@@ -220,6 +222,14 @@ export const SessionsTab: FC<{
                   <h3 className="text-sm font-medium line-clamp-2 leading-tight text-sidebar-foreground flex-1">
                     {title}
                   </h3>
+                  {projectSource === "cursor" && (
+                    <Badge
+                      variant="outline"
+                      className="text-[10px] shrink-0 px-1.5 py-0 text-muted-foreground"
+                    >
+                      Cursor
+                    </Badge>
+                  )}
                   {(isRunning || isPaused) && (
                     <Badge
                       variant={isRunning ? "default" : "secondary"}

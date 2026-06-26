@@ -61,11 +61,11 @@ Requirements (any one of the following must be available on the host running Cla
   curl -LsSf https://astral.sh/uv/install.sh | sh
   ```
 
-- **A pre-installed `logs2atif` on `PATH`** — if you prefer to install it yourself (pinned to the
-  branch Claude Code Viewer provisions):
+- **A pre-installed `logs2atif` on `PATH`** — if you prefer to install it yourself (pinned to
+  `develop`, the default branch):
 
   ```bash
-  uv tool install "git+https://github.com/driver-ai/logs2atif@feature/claude-codex-adapters"
+  uv tool install "git+https://github.com/driver-ai/logs2atif@develop"
   ```
 
 Claude Code Viewer resolves the tool in this order: an existing `logs2atif` on `PATH`, then `uvx`,

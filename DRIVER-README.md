@@ -62,8 +62,8 @@ everything else works without it. You need **either** `uv` **or** a pre-installe
 # via `uvx` / `uv tool run` (needs Python 3.11+, managed by uv).
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Option B: install logs2atif yourself, pinned to the branch the viewer provisions.
-uv tool install "git+https://github.com/driver-ai/logs2atif@feature/claude-codex-adapters"
+# Option B: install logs2atif yourself (pinned to `develop`, the default branch).
+uv tool install "git+https://github.com/driver-ai/logs2atif@develop"
 ```
 
 Resolution order at runtime: an existing `logs2atif` on `PATH`, then `uvx`, then `uv tool run`. If

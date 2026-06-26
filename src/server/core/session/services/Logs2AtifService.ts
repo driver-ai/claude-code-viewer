@@ -6,10 +6,9 @@ import { EnvService } from "../../platform/services/EnvService.ts";
 
 /**
  * Git spec used to provision logs2atif on demand via `uv` when it is not already
- * installed on PATH. Pinned to the branch that ships the Claude Code / Codex adapters.
+ * installed on PATH. Pinned to the default branch (`develop`).
  */
-const LOGS2ATIF_GIT_SPEC =
-  "git+https://github.com/driver-ai/logs2atif@feature/claude-codex-adapters";
+const LOGS2ATIF_GIT_SPEC = "git+https://github.com/driver-ai/logs2atif@develop";
 
 /** Raised when neither a `logs2atif` binary nor `uv`/`uvx` could be located on PATH. */
 export class Logs2AtifNotAvailableError extends Data.TaggedError("Logs2AtifNotAvailableError")<{
@@ -82,7 +81,7 @@ const LayerImpl = Effect.gen(function* () {
       return yield* Effect.fail(
         new Logs2AtifNotAvailableError({
           message:
-            "logs2atif is not available. Install it (or `uv`) so the viewer can convert sessions to ATIF: `uv tool install git+https://github.com/driver-ai/logs2atif`.",
+            "logs2atif is not available. Install it (or `uv`) so the viewer can convert sessions to ATIF: `uv tool install git+https://github.com/driver-ai/logs2atif@develop`.",
         }),
       );
     });

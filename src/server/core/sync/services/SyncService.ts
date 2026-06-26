@@ -5,6 +5,7 @@ import { z } from "zod";
 import { DrizzleService } from "../../../lib/db/DrizzleService.ts";
 import { projects, sessions } from "../../../lib/db/schema.ts";
 import { parseJsonl } from "../../claude-code/functions/parseJsonl.ts";
+import { CursorSyncService } from "../../cursor/services/CursorSyncService.ts";
 import { ApplicationContext } from "../../platform/services/ApplicationContext.ts";
 import { decodeProjectId, encodeProjectId } from "../../project/functions/id.ts";
 import { extractSearchableText } from "../../search/functions/extractSearchableText.ts";
@@ -92,6 +93,7 @@ const LayerImpl = Effect.gen(function* () {
   const path = yield* Path.Path;
   const drizzleService = yield* DrizzleService;
   const appContext = yield* ApplicationContext;
+  const cursorSyncService = yield* CursorSyncService;
 
   const { db, rawDb } = drizzleService;
 
@@ -362,8 +364,12 @@ const LayerImpl = Effect.gen(function* () {
         .readDirectory(claudeProjectsDirPath)
         .pipe(Effect.catchAll(() => Effect.succeed([] as string[])));
 
-      // Get known projects from DB
-      const knownProjects = db.select().from(projects).all();
+      // Get known Claude Code projects from DB (exclude Cursor projects from cleanup)
+      const knownProjects = db
+        .select()
+        .from(projects)
+        .where(eq(projects.source, "claude-code"))
+        .all();
       const knownProjectIds = new Set(knownProjects.map((p) => p.id));
       const seenProjectIds = new Set<string>();
 
@@ -473,7 +479,7 @@ const LayerImpl = Effect.gen(function* () {
           .run();
       }
 
-      // Delete projects that no longer exist on filesystem
+      // Delete Claude Code projects that no longer exist on filesystem
       for (const knownProjectId of knownProjectIds) {
         if (!seenProjectIds.has(knownProjectId)) {
           db.delete(sessions).where(eq(sessions.projectId, knownProjectId)).run();
@@ -483,6 +489,14 @@ const LayerImpl = Effect.gen(function* () {
           db.delete(projects).where(eq(projects.id, knownProjectId)).run();
         }
       }
+
+      // Sync Cursor sessions (failures don't break Claude Code sync)
+      yield* cursorSyncService.syncCursorSessions().pipe(
+        Effect.catchAll((e) => {
+          Effect.runFork(Effect.logError(`[SyncService] Cursor sync failed: ${String(e)}`));
+          return Effect.void;
+        }),
+      );
     });
 
   // -------------------------------------------------------------------------

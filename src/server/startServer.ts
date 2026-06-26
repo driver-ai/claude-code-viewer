@@ -16,6 +16,7 @@ import { ClaudeCodePermissionService } from "./core/claude-code/services/ClaudeC
 import { ClaudeCodeService } from "./core/claude-code/services/ClaudeCodeService.ts";
 import { ClaudeCodeSessionProcessService } from "./core/claude-code/services/ClaudeCodeSessionProcessService.ts";
 import { ProjectSettingsService } from "./core/claude-code/services/ProjectSettingsService.ts";
+import { CursorSyncService } from "./core/cursor/services/CursorSyncService.ts";
 import { SSEController } from "./core/events/presentation/SSEController.ts";
 import { FileWatcherService } from "./core/events/services/fileWatcher.ts";
 import { FeatureFlagController } from "./core/feature-flag/presentation/FeatureFlagController.ts";
@@ -138,7 +139,11 @@ const InfraBasics = Layer.mergeAll(
   ProjectMetaService.Live,
   SessionMetaService.Live,
   SessionAllowlistRepository.Live,
-).pipe(Layer.provideMerge(SyncService.Live), Layer.provideMerge(DrizzleService.Live));
+).pipe(
+  Layer.provideMerge(SyncService.Live),
+  Layer.provideMerge(CursorSyncService.Live),
+  Layer.provideMerge(DrizzleService.Live),
+);
 
 const InfraRepos = Layer.mergeAll(ProjectRepository.Live, SessionRepository.Live).pipe(
   Layer.provideMerge(InfraBasics),

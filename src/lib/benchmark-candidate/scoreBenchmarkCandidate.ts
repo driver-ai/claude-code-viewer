@@ -86,7 +86,7 @@ const getFirstUserText = (conv: ExtendedConversation): string | null => {
 };
 
 const getFilePath = (input: Record<string, unknown>): string | null => {
-  const fp = input.file_path;
+  const fp = input.file_path ?? input.path;
   return typeof fp === "string" ? fp : null;
 };
 

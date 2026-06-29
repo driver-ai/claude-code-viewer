@@ -51,6 +51,7 @@ describe("SessionController", () => {
       const sessionRepositoryLayer = Layer.succeed(SessionRepository, {
         getSession: () => Effect.succeed({ session: null }),
         getSessions: () => Effect.succeed({ sessions: [] }),
+        resolveSessionFilePath: () => null,
       });
 
       const agentSessionRepositoryLayer = Layer.succeed(AgentSessionRepository, {

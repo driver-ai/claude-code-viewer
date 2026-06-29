@@ -94,7 +94,14 @@ const LayerImpl = Effect.gen(function* () {
   const exportSessionJsonl = (options: { projectId: string; sessionId: string }) =>
     Effect.gen(function* () {
       const { projectId, sessionId } = options;
-      const sessionPath = decodeSessionId(projectId, sessionId);
+      const sessionPath = sessionRepository.resolveSessionFilePath(projectId, sessionId);
+
+      if (sessionPath === null) {
+        return {
+          status: 404,
+          response: { error: "Session not found" },
+        } as const satisfies ControllerResponse;
+      }
 
       const exists = yield* fs.exists(sessionPath);
       if (!exists) {
@@ -114,7 +121,14 @@ const LayerImpl = Effect.gen(function* () {
   const exportSessionAtif = (options: { projectId: string; sessionId: string }) =>
     Effect.gen(function* () {
       const { projectId, sessionId } = options;
-      const sessionPath = decodeSessionId(projectId, sessionId);
+      const sessionPath = sessionRepository.resolveSessionFilePath(projectId, sessionId);
+
+      if (sessionPath === null) {
+        return {
+          status: 404,
+          response: { error: "Session not found" },
+        } as const satisfies ControllerResponse;
+      }
 
       const exists = yield* fs.exists(sessionPath);
       if (!exists) {

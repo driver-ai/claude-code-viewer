@@ -10,5 +10,6 @@ export const testSessionRepositoryLayer = (options?: { sessions: Array<Session> 
       return Effect.succeed({ sessions });
     },
     getSession: () => Effect.fail(new Error("Not implemented in mock")),
+    resolveSessionFilePath: () => null,
   });
 };

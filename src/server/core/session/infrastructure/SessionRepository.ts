@@ -180,9 +180,18 @@ const LayerImpl = Effect.gen(function* () {
       return { sessions: sessionsResult };
     });
 
+  const resolveSessionFilePath = (projectId: string, sessionId: string): string | null => {
+    if (isCursorProject(projectId)) {
+      const row = db.select().from(sessions).where(eq(sessions.id, sessionId)).get();
+      return row?.filePath ?? null;
+    }
+    return decodeSessionId(projectId, sessionId);
+  };
+
   return {
     getSession,
     getSessions,
+    resolveSessionFilePath,
   };
 });
 

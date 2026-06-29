@@ -3,8 +3,7 @@ import { extractCursorProjectSlug } from "./extractCursorProjectSlug.ts";
 
 describe("extractCursorProjectSlug", () => {
   test("extracts project slug from a standard cursor agent-transcripts path", () => {
-    const path =
-      "~/.cursor/projects/Users-fangio-Code-myapp/agent-transcripts/uuid/uuid.jsonl";
+    const path = "~/.cursor/projects/Users-fangio-Code-myapp/agent-transcripts/uuid/uuid.jsonl";
     expect(extractCursorProjectSlug(path)).toBe("Users-fangio-Code-myapp");
   });
 

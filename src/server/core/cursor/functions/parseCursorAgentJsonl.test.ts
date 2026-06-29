@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ErrorJsonl, ExtendedConversation } from "../../types.ts";
-import {
-  type CursorParseContext,
-  parseCursorAgentJsonl,
-} from "./parseCursorAgentJsonl.ts";
+import { type CursorParseContext, parseCursorAgentJsonl } from "./parseCursorAgentJsonl.ts";
 
 type UserEntry = Extract<ExtendedConversation, { type: "user" }>;
 type AssistantEntry = Extract<ExtendedConversation, { type: "assistant" }>;
@@ -17,9 +14,7 @@ const expectUserEntry = (entry: ExtendedConversation | undefined): UserEntry => 
   return entry;
 };
 
-const expectAssistantEntry = (
-  entry: ExtendedConversation | undefined,
-): AssistantEntry => {
+const expectAssistantEntry = (entry: ExtendedConversation | undefined): AssistantEntry => {
   expect(entry?.type).toBe("assistant");
   if (entry?.type !== "assistant") {
     throw new Error("Expected assistant entry");
@@ -27,9 +22,7 @@ const expectAssistantEntry = (
   return entry;
 };
 
-const expectSystemEntry = (
-  entry: ExtendedConversation | undefined,
-): SystemEntry => {
+const expectSystemEntry = (entry: ExtendedConversation | undefined): SystemEntry => {
   expect(entry?.type).toBe("system");
   if (entry?.type !== "system") {
     throw new Error("Expected system entry");
@@ -71,17 +64,13 @@ describe("parseCursorAgentJsonl", () => {
     expect(entry.cwd).toBe(defaultContext.cwd);
     expect(entry.sessionId).toBe(defaultContext.sessionId);
     expect(entry.version).toBe("cursor-agent-1.0");
-    expect(entry.uuid).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
-    );
+    expect(entry.uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     expect(entry.timestamp).toBe(defaultContext.timestamp);
     expect(entry.parentUuid).toBeNull();
 
     // User message shape
     expect(entry.message.role).toBe("user");
-    expect(entry.message.content).toEqual([
-      { type: "text", text: "Hello from Cursor" },
-    ]);
+    expect(entry.message.content).toEqual([{ type: "text", text: "Hello from Cursor" }]);
   });
 
   it("with valid assistant line containing tool_use returns type assistant with tool_use content blocks preserved", () => {
@@ -146,9 +135,7 @@ describe("parseCursorAgentJsonl", () => {
     expect(entry.cwd).toBe(defaultContext.cwd);
     expect(entry.sessionId).toBe(defaultContext.sessionId);
     expect(entry.version).toBe("cursor-agent-1.0");
-    expect(entry.uuid).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
-    );
+    expect(entry.uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     expect(entry.timestamp).toBe(defaultContext.timestamp);
     expect(entry.parentUuid).toBeNull();
   });

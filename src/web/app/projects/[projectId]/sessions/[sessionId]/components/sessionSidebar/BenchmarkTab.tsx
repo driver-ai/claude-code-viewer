@@ -14,6 +14,7 @@ import { type FC, useState } from "react";
 import type {
   BenchmarkCandidateScore,
   FileReadDetail,
+  SearchCallDetail,
 } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import { Button } from "@/web/components/ui/button";
 import { sessionBenchmarkScoreQuery } from "@/web/lib/api/queries";
@@ -149,6 +150,64 @@ const FileReadList: FC<{ files: readonly FileReadDetail[] }> = ({ files }) => {
   );
 };
 
+const toolBadgeColor: Record<string, string> = {
+  Grep: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
+  Glob: "bg-purple-500/15 text-purple-600 dark:text-purple-400",
+  rg: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
+  SemanticSearch: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+  Bash: "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400",
+  Shell: "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400",
+};
+
+const SearchCallList: FC<{ searches: readonly SearchCallDetail[] }> = ({ searches }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  if (searches.length === 0) return null;
+
+  return (
+    <div className="mt-1">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-1 text-[10px] text-sidebar-foreground/50 hover:text-sidebar-foreground/70 transition-colors"
+      >
+        {isOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+        <span>{searches.length} searches</span>
+      </button>
+      {isOpen && (
+        <div className="mt-1 max-h-48 overflow-y-auto space-y-0.5">
+          {searches.map((search, i) => (
+            <div
+              key={`${search.tool}-${i}`}
+              className={cn(
+                "flex items-start gap-1.5 px-1.5 py-0.5 rounded-sm",
+                search.missed && "bg-red-500/5",
+              )}
+            >
+              <span
+                className={cn(
+                  "text-[9px] font-medium px-1 py-px rounded shrink-0 mt-px",
+                  toolBadgeColor[search.tool] ?? "bg-muted text-muted-foreground",
+                )}
+              >
+                {search.tool}
+              </span>
+              <span
+                className={cn(
+                  "text-[10px] font-mono break-all min-w-0",
+                  search.missed ? "text-red-500/70 line-through" : "text-sidebar-foreground/60",
+                )}
+              >
+                {search.query || "—"}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ── main panel ────────────────────────────────────────────────────────────────
 
 type SessionCost = {
@@ -212,6 +271,7 @@ const ScoreDisplay: FC<{
     signals,
     driverToolBreakdown,
     fileReadDetails,
+    searchCallDetails,
   } = score;
 
   return (
@@ -251,6 +311,7 @@ const ScoreDisplay: FC<{
         <FileReadList files={fileReadDetails} />
         <NumSignal value={signals.searchToolCalls} label="Search calls" />
         <NumSignal value={signals.searchMisses} label="Search misses" />
+        <SearchCallList searches={searchCallDetails} />
         <NumSignal value={signals.turnsToFirstEdit} label="Exploration turns" />
         <NumSignal value={signals.editFanOutDirs} label="Dirs edited" />
         <NumSignal value={signals.totalAssistantTurns} label="Total turns" />

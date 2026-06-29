@@ -69,6 +69,12 @@ export type FileReadDetail = {
   readonly count: number;
 };
 
+export type SearchCallDetail = {
+  readonly tool: string;
+  readonly query: string;
+  readonly missed: boolean;
+};
+
 export type BenchmarkCandidateScore = {
   readonly contextDifficulty: number;
   readonly verifiability: number;
@@ -76,6 +82,7 @@ export type BenchmarkCandidateScore = {
   readonly signals: BenchmarkSignals;
   readonly driverToolBreakdown: DriverToolBreakdown;
   readonly fileReadDetails: readonly FileReadDetail[];
+  readonly searchCallDetails: readonly SearchCallDetail[];
 };
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -123,6 +130,8 @@ export const scoreBenchmarkCandidate = (
   const readFilePaths = new Map<string, number>();
   const editedDirs = new Set<string>();
   const searchToolUseIds = new Set<string>();
+  const searchDetailsByToolUseId = new Map<string, { tool: string; query: string }>();
+  const missedSearchToolUseIds = new Set<string>();
   const testRunnerToolUseIds: string[] = [];
 
   const driverToolCounts: Record<string, number> = {};
@@ -206,6 +215,7 @@ export const scoreBenchmarkCandidate = (
           const text = getToolResultText(resultContent);
           if (is_error === true || text.trim() === "" || text.includes("No files found")) {
             searchMisses++;
+            missedSearchToolUseIds.add(tool_use_id);
           }
         }
       }
@@ -242,6 +252,15 @@ export const scoreBenchmarkCandidate = (
         if (SEARCH_TOOL_NAMES.has(name)) {
           searchToolCalls++;
           searchToolUseIds.add(toolUseId);
+          const query =
+            typeof input.pattern === "string"
+              ? input.pattern
+              : typeof input.query === "string"
+                ? input.query
+                : typeof input.glob === "string"
+                  ? input.glob
+                  : "";
+          searchDetailsByToolUseId.set(toolUseId, { tool: name, query });
         }
 
         // Shell command analysis (Claude Code: "Bash", Cursor: "Shell")
@@ -251,6 +270,8 @@ export const scoreBenchmarkCandidate = (
           if (BASH_SEARCH_PATTERN.test(command)) {
             searchToolCalls++;
             searchToolUseIds.add(toolUseId);
+            const shortCmd = command.length > 80 ? `${command.slice(0, 77)}...` : command;
+            searchDetailsByToolUseId.set(toolUseId, { tool: name, query: shortCmd });
           }
           if (TEST_RUNNER_PATTERN.test(command)) {
             testRunnerInvoked = true;
@@ -357,6 +378,14 @@ export const scoreBenchmarkCandidate = (
     .map(([path, count]) => ({ path, count }))
     .sort((a, b) => b.count - a.count);
 
+  const searchCallDetails: SearchCallDetail[] = [...searchDetailsByToolUseId.entries()].map(
+    ([id, detail]) => ({
+      tool: detail.tool,
+      query: detail.query,
+      missed: missedSearchToolUseIds.has(id),
+    }),
+  );
+
   return {
     contextDifficulty,
     verifiability,
@@ -368,5 +397,6 @@ export const scoreBenchmarkCandidate = (
       toolCounts: driverToolCounts,
     },
     fileReadDetails,
+    searchCallDetails,
   };
 };

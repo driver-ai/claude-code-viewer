@@ -2,6 +2,8 @@ import { Trans } from "@lingui/react";
 import { useQuery } from "@tanstack/react-query";
 import {
   CheckCircle2,
+  ChevronDown,
+  ChevronRight,
   DollarSignIcon,
   DownloadIcon,
   FlaskConical,
@@ -9,7 +11,10 @@ import {
   XCircle,
 } from "lucide-react";
 import { type FC, useState } from "react";
-import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
+import type {
+  BenchmarkCandidateScore,
+  FileReadDetail,
+} from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import { Button } from "@/web/components/ui/button";
 import { sessionBenchmarkScoreQuery } from "@/web/lib/api/queries";
 import { cn } from "@/web/utils";
@@ -91,6 +96,59 @@ const NumSignal: FC<{ value: number; label: string; suffix?: string }> = ({
   </div>
 );
 
+const FileReadList: FC<{ files: readonly FileReadDetail[] }> = ({ files }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  if (files.length === 0) return null;
+
+  const maxCount = files[0]?.count ?? 1;
+
+  return (
+    <div className="mt-1">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-1 text-[10px] text-sidebar-foreground/50 hover:text-sidebar-foreground/70 transition-colors"
+      >
+        {isOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+        <span>{files.length} files</span>
+      </button>
+      {isOpen && (
+        <div className="mt-1 max-h-48 overflow-y-auto space-y-0.5">
+          {files.map((file) => {
+            const name = file.path.split("/").pop() ?? file.path;
+            const dir = file.path.slice(0, file.path.length - name.length - 1);
+            const barWidth = Math.max(8, (file.count / maxCount) * 100);
+            return (
+              <div key={file.path} className="group relative" title={file.path}>
+                <div
+                  className="absolute inset-y-0 left-0 rounded-sm bg-sidebar-accent/60"
+                  style={{ width: `${barWidth}%` }}
+                />
+                <div className="relative flex items-center justify-between gap-1 px-1.5 py-0.5">
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[11px] font-medium text-sidebar-foreground truncate block">
+                      {name}
+                    </span>
+                    {dir !== "" && (
+                      <span className="text-[9px] text-sidebar-foreground/40 truncate block">
+                        {dir}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[10px] font-mono text-sidebar-foreground/60 shrink-0 tabular-nums">
+                    {file.count}×
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ── main panel ────────────────────────────────────────────────────────────────
 
 type SessionCost = {
@@ -147,7 +205,14 @@ const ScoreDisplay: FC<{
   projectId: string;
   sessionId: string;
 }> = ({ score, cost, projectId, sessionId }) => {
-  const { contextDifficulty, verifiability, overall, signals, driverToolBreakdown } = score;
+  const {
+    contextDifficulty,
+    verifiability,
+    overall,
+    signals,
+    driverToolBreakdown,
+    fileReadDetails,
+  } = score;
 
   return (
     <div className="space-y-4 p-3">
@@ -183,6 +248,7 @@ const ScoreDisplay: FC<{
         </p>
         <NumSignal value={signals.distinctFilesRead} label="Files read" />
         <NumSignal value={signals.reReadCount} label="Re-reads" />
+        <FileReadList files={fileReadDetails} />
         <NumSignal value={signals.searchToolCalls} label="Search calls" />
         <NumSignal value={signals.searchMisses} label="Search misses" />
         <NumSignal value={signals.turnsToFirstEdit} label="Exploration turns" />

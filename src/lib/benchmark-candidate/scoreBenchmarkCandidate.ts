@@ -64,12 +64,18 @@ export type DriverToolBreakdown = {
   readonly toolCounts: Readonly<Record<string, number>>;
 };
 
+export type FileReadDetail = {
+  readonly path: string;
+  readonly count: number;
+};
+
 export type BenchmarkCandidateScore = {
   readonly contextDifficulty: number;
   readonly verifiability: number;
   readonly overall: "strong" | "possible" | "weak";
   readonly signals: BenchmarkSignals;
   readonly driverToolBreakdown: DriverToolBreakdown;
+  readonly fileReadDetails: readonly FileReadDetail[];
 };
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -347,6 +353,10 @@ export const scoreBenchmarkCandidate = (
 
   const driverTotalCalls = Object.values(driverToolCounts).reduce((sum, c) => sum + c, 0);
 
+  const fileReadDetails: FileReadDetail[] = [...readFilePaths.entries()]
+    .map(([path, count]) => ({ path, count }))
+    .sort((a, b) => b.count - a.count);
+
   return {
     contextDifficulty,
     verifiability,
@@ -357,5 +367,6 @@ export const scoreBenchmarkCandidate = (
       totalCalls: driverTotalCalls,
       toolCounts: driverToolCounts,
     },
+    fileReadDetails,
   };
 };

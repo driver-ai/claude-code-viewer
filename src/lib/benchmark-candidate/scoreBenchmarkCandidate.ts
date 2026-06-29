@@ -3,8 +3,8 @@ import { parseUserMessage } from "../claude-code/parseUserMessage.ts";
 
 // ── constants ────────────────────────────────────────────────────────────────
 
-const SEARCH_TOOL_NAMES = new Set(["Grep", "Glob"]);
-const EDIT_TOOL_NAMES = new Set(["Write", "Edit", "StrReplace"]);
+const SEARCH_TOOL_NAMES = new Set(["Grep", "Glob", "rg", "SemanticSearch"]);
+const EDIT_TOOL_NAMES = new Set(["Write", "Edit", "StrReplace", "ApplyPatch"]);
 
 const BASH_SEARCH_PATTERN = /\b(find|grep|rg|ls)\b/;
 const TEST_RUNNER_PATTERN =
@@ -224,21 +224,22 @@ export const scoreBenchmarkCandidate = (
           driverToolCounts[driverTool] = (driverToolCounts[driverTool] ?? 0) + 1;
         }
 
-        // Read tracking
-        if (name === "Read") {
+        // Read tracking (Claude Code: "Read", Cursor: "Read" or "ReadFile")
+        if (name === "Read" || name === "ReadFile") {
           const fp = getFilePath(input);
           if (fp !== null) {
             readFilePaths.set(fp, (readFilePaths.get(fp) ?? 0) + 1);
           }
         }
 
-        // Search tool tracking
+        // Search tool tracking (Cursor also uses "rg", "SemanticSearch")
         if (SEARCH_TOOL_NAMES.has(name)) {
           searchToolCalls++;
           searchToolUseIds.add(toolUseId);
         }
 
-        if (name === "Bash") {
+        // Shell command analysis (Claude Code: "Bash", Cursor: "Shell")
+        if (name === "Bash" || name === "Shell") {
           const command = typeof input.command === "string" ? input.command : "";
 
           if (BASH_SEARCH_PATTERN.test(command)) {

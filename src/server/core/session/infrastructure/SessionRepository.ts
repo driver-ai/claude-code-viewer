@@ -5,12 +5,18 @@ import { DrizzleService } from "../../../lib/db/DrizzleService.ts";
 import { projects, sessions } from "../../../lib/db/schema.ts";
 import type { InferEffect } from "../../../lib/effect/types.ts";
 import { parseJsonl } from "../../claude-code/functions/parseJsonl.ts";
+import { parseCursorAgentJsonl } from "../../cursor/functions/parseCursorAgentJsonl.ts";
 import { ApplicationContext } from "../../platform/services/ApplicationContext.ts";
 import { decodeProjectId, validateProjectPath } from "../../project/functions/id.ts";
 import { SyncService } from "../../sync/services/SyncService.ts";
 import type { Session, SessionDetail } from "../../types.ts";
 import { decodeSessionId, validateSessionId } from "../functions/id.ts";
 import { SessionMetaService } from "../services/SessionMetaService.ts";
+
+const isCursorProject = (projectId: string): boolean => {
+  const decoded = decodeProjectId(projectId);
+  return decoded.startsWith("cursor:");
+};
 
 const LayerImpl = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
@@ -24,6 +30,39 @@ const LayerImpl = Effect.gen(function* () {
       // Validate sessionId contains only safe characters
       if (!validateSessionId(sessionId)) {
         return yield* Effect.fail(new Error("Invalid session ID: contains unsafe characters"));
+      }
+
+      if (isCursorProject(projectId)) {
+        const row = db.select().from(sessions).where(eq(sessions.id, sessionId)).get();
+        if (row === undefined) {
+          return { session: null };
+        }
+
+        const sessionPath = row.filePath;
+        const exists = yield* fs.exists(sessionPath);
+        if (!exists) {
+          return { session: null };
+        }
+
+        const content = yield* fs.readFileString(sessionPath);
+        const conversations = parseCursorAgentJsonl(content, {
+          sessionId,
+          cwd: "/",
+          timestamp: row.lastModifiedAt,
+        });
+
+        const stat = yield* fs.stat(sessionPath);
+        const meta = yield* sessionMetaService.getSessionMeta(projectId, sessionId);
+
+        return {
+          session: {
+            id: sessionId,
+            jsonlFilePath: sessionPath,
+            meta,
+            conversations,
+            lastModifiedAt: Option.getOrElse(stat.mtime, () => new Date()),
+          } satisfies SessionDetail,
+        };
       }
 
       // Validate that the project path is within the Claude projects directory
@@ -80,12 +119,14 @@ const LayerImpl = Effect.gen(function* () {
     Effect.gen(function* () {
       const { maxCount = 20, cursor } = options ?? {};
 
-      const claudeProjectPath = decodeProjectId(projectId);
+      if (!isCursorProject(projectId)) {
+        const claudeProjectPath = decodeProjectId(projectId);
 
-      // Validate that the project path is within the Claude projects directory
-      const { claudeProjectsDirPath } = yield* appContext.claudeCodePaths;
-      if (!validateProjectPath(claudeProjectPath, claudeProjectsDirPath)) {
-        return yield* Effect.fail(new Error("Invalid project path: outside allowed directory"));
+        // Validate that the project path is within the Claude projects directory
+        const { claudeProjectsDirPath } = yield* appContext.claudeCodePaths;
+        if (!validateProjectPath(claudeProjectPath, claudeProjectsDirPath)) {
+          return yield* Effect.fail(new Error("Invalid project path: outside allowed directory"));
+        }
       }
 
       // Ensure project is synced in DB

@@ -1,5 +1,5 @@
 import { FileSystem } from "@effect/platform";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { Context, Effect, Layer, Option } from "effect";
 import { DrizzleService } from "../../../lib/db/DrizzleService.ts";
 import { projects } from "../../../lib/db/schema.ts";
@@ -9,6 +9,11 @@ import type { Project } from "../../types.ts";
 import { decodeProjectId, validateProjectPath } from "../functions/id.ts";
 import { ProjectMetaService } from "../services/ProjectMetaService.ts";
 
+const isCursorProject = (projectId: string): boolean => {
+  const decoded = decodeProjectId(projectId);
+  return decoded.startsWith("cursor:");
+};
+
 const LayerImpl = Effect.gen(function* () {
   const fs = yield* FileSystem.FileSystem;
   const projectMetaService = yield* ProjectMetaService;
@@ -17,6 +22,24 @@ const LayerImpl = Effect.gen(function* () {
 
   const getProject = (projectId: string) =>
     Effect.gen(function* () {
+      if (isCursorProject(projectId)) {
+        const row = db.select().from(projects).where(eq(projects.id, projectId)).get();
+        if (row === undefined) {
+          return yield* Effect.fail(new Error("Project not found"));
+        }
+
+        const meta = yield* projectMetaService.getProjectMeta(projectId);
+
+        return {
+          project: {
+            id: projectId,
+            claudeProjectPath: row.path ?? "",
+            lastModifiedAt: new Date(row.dirMtimeMs),
+            meta,
+          },
+        };
+      }
+
       const fullPath = decodeProjectId(projectId);
 
       // Validate that the decoded path is within the Claude projects directory

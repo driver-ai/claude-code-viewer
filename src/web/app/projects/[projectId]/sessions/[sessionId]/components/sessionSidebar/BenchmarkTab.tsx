@@ -218,6 +218,12 @@ type SessionCost = {
     cacheCreationUsd: number;
     cacheReadUsd: number;
   };
+  tokenUsage: {
+    inputTokens: number;
+    outputTokens: number;
+    cacheCreationTokens: number;
+    cacheReadTokens: number;
+  };
 };
 
 const formatUsd = (value: number): string =>
@@ -286,10 +292,19 @@ const ScoreDisplay: FC<{
       {cost !== undefined && (
         <div className="flex items-center gap-1.5 text-xs">
           <DollarSignIcon className="h-3.5 w-3.5 text-sidebar-foreground/50" />
-          <span className="font-mono font-medium text-sidebar-foreground">
-            {formatUsd(cost.totalUsd)}
-          </span>
-          <span className="text-sidebar-foreground/50">session cost</span>
+          {cost.tokenUsage.inputTokens === 0 && cost.tokenUsage.outputTokens === 0 ? (
+            <>
+              <span className="font-mono text-sidebar-foreground/40">N/A</span>
+              <span className="text-sidebar-foreground/40">session cost</span>
+            </>
+          ) : (
+            <>
+              <span className="font-mono font-medium text-sidebar-foreground">
+                {formatUsd(cost.totalUsd)}
+              </span>
+              <span className="text-sidebar-foreground/50">session cost</span>
+            </>
+          )}
         </div>
       )}
 

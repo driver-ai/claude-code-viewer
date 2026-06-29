@@ -234,8 +234,16 @@ export const scoreBenchmarkCandidate = (
 
         const { name, input, id: toolUseId } = item;
 
-        // Driver MCP detection — match by known tool names, not server prefix
-        const driverTool = getDriverMcpToolName(name);
+        // Driver MCP detection
+        // Claude Code: tool name is "mcp__<server>__<toolName>"
+        // Cursor: tool name is "CallMcpTool" with input.server and input.toolName
+        let driverTool = getDriverMcpToolName(name);
+        if (driverTool === null && name === "CallMcpTool") {
+          const mcpToolName = typeof input.toolName === "string" ? input.toolName : null;
+          if (mcpToolName !== null && DRIVER_MCP_TOOL_NAMES.has(mcpToolName)) {
+            driverTool = mcpToolName;
+          }
+        }
         if (driverTool !== null) {
           driverToolCounts[driverTool] = (driverToolCounts[driverTool] ?? 0) + 1;
         }

@@ -11,7 +11,7 @@ import {
   RepeatIcon,
   WaypointsIcon,
 } from "lucide-react";
-import { type FC, type ReactNode, useEffect, useMemo, useRef } from "react";
+import { type FC, type ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
 import type { BenchmarkCandidateScore } from "@/lib/benchmark-candidate/scoreBenchmarkCandidate";
 import { formatLocaleDate } from "@/lib/date/formatLocaleDate";
 import { createVirtualSessionEntries } from "@/lib/virtual-messages/createVirtualSessionEntries";
@@ -20,7 +20,6 @@ import {
   virtualMessagesAtom,
 } from "@/lib/virtual-messages/virtualMessageStore";
 import { Badge } from "@/web/components/ui/badge";
-import { Button } from "@/web/components/ui/button";
 import { cn } from "@/web/utils";
 import { useConfig } from "../../../../../../hooks/useConfig";
 import { useProject } from "../../../../hooks/useProject";
@@ -154,6 +153,23 @@ export const SessionsTab: FC<{
       return bTime - aTime;
     });
   }, [sessions, sessionProcesses]);
+
+  const sentinelRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (node === null) return;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting === true && hasNextPage === true && !isFetchingNextPage) {
+            void fetchNextPage();
+          }
+        },
+        { threshold: 0 },
+      );
+      observer.observe(node);
+      return () => observer.disconnect();
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
+  );
 
   return (
     <div className="h-full flex flex-col">
@@ -307,24 +323,13 @@ export const SessionsTab: FC<{
           );
         })}
 
-        {/* Load More Button */}
         {hasNextPage === true && (
-          <div className="p-2">
-            <Button
-              onClick={() => {
-                void fetchNextPage();
-              }}
-              disabled={isFetchingNextPage}
-              variant="outline"
-              size="sm"
-              className="w-full"
-            >
-              {isFetchingNextPage ? (
+          <div ref={sentinelRef} className="flex items-center justify-center p-4">
+            {isFetchingNextPage && (
+              <span className="text-xs text-sidebar-foreground/50">
                 <Trans id="common.loading" />
-              ) : (
-                <Trans id="sessions.load.more" />
-              )}
-            </Button>
+              </span>
+            )}
           </div>
         )}
       </div>

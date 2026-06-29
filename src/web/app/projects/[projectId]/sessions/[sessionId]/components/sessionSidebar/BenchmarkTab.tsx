@@ -367,7 +367,11 @@ const ScoreDisplay: FC<{
         </p>
       </div>
 
-      {sessionId !== "" && <ExportAtifButton projectId={projectId} sessionId={sessionId} />}
+      {sessionId !== "" &&
+        cost !== undefined &&
+        (cost.tokenUsage.inputTokens > 0 || cost.tokenUsage.outputTokens > 0) && (
+          <ExportAtifButton projectId={projectId} sessionId={sessionId} />
+        )}
     </div>
   );
 };

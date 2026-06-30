@@ -1,5 +1,6 @@
+import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { type FC, Suspense, useCallback, useState } from "react";
+import { type FC, Suspense, useCallback, useEffect, useState } from "react";
 import { rightPanelResizingAtom } from "@/lib/atoms/rightPanel";
 import { AppLayout } from "@/web/app/components/AppLayout";
 import { BottomPanel } from "@/web/app/components/BottomPanel";
@@ -70,9 +71,24 @@ const SessionPageInner: FC<{
   const rightPanelWidth = useRightPanelWidth();
   const isRightPanelResizing = useAtomValue(rightPanelResizingAtom);
   const { data: projectData } = useProject(projectId);
+  const navigate = useNavigate();
 
   const firstPage = projectData.pages[0];
   const project = firstPage?.project;
+
+  useEffect(() => {
+    if (sessionId === undefined) {
+      const firstSession = firstPage?.sessions[0];
+      if (firstSession !== undefined) {
+        void navigate({
+          to: "/projects/$projectId/session",
+          params: { projectId },
+          search: { sessionId: firstSession.id, tab },
+          replace: true,
+        });
+      }
+    }
+  }, [sessionId, firstPage, projectId, tab, navigate]);
   const projectPath = project?.meta.projectPath ?? project?.claudeProjectPath;
   const projectName = project?.meta.projectName ?? "Untitled Project";
 

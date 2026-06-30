@@ -129,7 +129,11 @@ export const ProjectList: FC = () => {
             </CardContent>
             <CardContent className="pt-0">
               <Button asChild className="w-full">
-                <Link to={"/projects/$projectId/session"} params={{ projectId: project.id }}>
+                <Link
+                  to={"/projects/$projectId/session"}
+                  params={{ projectId: project.id }}
+                  search={{ tab: "sessions" }}
+                >
                   <Trans id="project_list.view_conversations" />
                 </Link>
               </Button>

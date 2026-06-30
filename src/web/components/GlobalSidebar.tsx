@@ -1,7 +1,7 @@
 import { Trans } from "@lingui/react";
 import { useNavigate } from "@tanstack/react-router";
 import { type LucideIcon, InfoIcon, LogOut, SearchIcon, SettingsIcon } from "lucide-react";
-import { type FC, type ReactNode, Suspense, useState } from "react";
+import { type FC, type ReactNode, Suspense, useEffect, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -118,6 +118,15 @@ export const GlobalSidebar: FC<GlobalSidebarProps> = ({
   const [activeTab, setActiveTab] = useState<string>(
     defaultActiveTab ?? allTabs[0]?.id ?? "settings",
   );
+
+  useEffect(() => {
+    if (defaultActiveTab !== undefined) {
+      setActiveTab(defaultActiveTab);
+      if (isContentHidden) {
+        onToggle?.();
+      }
+    }
+  }, [defaultActiveTab]);
 
   // Tab click behavior:
   // - If onMobileTabClick is set: delegate to mobile overlay

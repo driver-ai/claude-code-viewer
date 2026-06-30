@@ -7,7 +7,7 @@ import {
   MessageSquareIcon,
   PlugIcon,
 } from "lucide-react";
-import { type FC, Suspense, useMemo } from "react";
+import { type FC, Suspense, useEffect, useMemo } from "react";
 import { GlobalSidebar, type SidebarTab } from "@/web/components/GlobalSidebar";
 import {
   Tooltip,
@@ -34,6 +34,12 @@ export const SessionSidebar: FC<{
   const { isLeftPanelOpen } = useLeftPanelState();
   const { toggleLeftPanel } = useLeftPanelActions();
   const isSubscriptionMode = useIsSubscriptionMode();
+
+  useEffect(() => {
+    if (!isLeftPanelOpen && initialTab === "sessions") {
+      toggleLeftPanel();
+    }
+  }, []);
   const activeSessionId = currentSessionId ?? "";
   const additionalTabs: SidebarTab[] = useMemo(
     () => [

@@ -32,14 +32,14 @@ export const SessionSidebar: FC<{
   initialTab: Tab;
 }> = ({ currentSessionId, projectId, className, initialTab }) => {
   const { isLeftPanelOpen } = useLeftPanelState();
-  const { toggleLeftPanel } = useLeftPanelActions();
+  const { toggleLeftPanel, setIsLeftPanelOpen } = useLeftPanelActions();
   const isSubscriptionMode = useIsSubscriptionMode();
 
   useEffect(() => {
-    if (!isLeftPanelOpen && initialTab === "sessions") {
-      toggleLeftPanel();
+    if (initialTab === "sessions") {
+      setIsLeftPanelOpen(true);
     }
-  }, []);
+  }, [initialTab, setIsLeftPanelOpen]);
   const activeSessionId = currentSessionId ?? "";
   const additionalTabs: SidebarTab[] = useMemo(
     () => [

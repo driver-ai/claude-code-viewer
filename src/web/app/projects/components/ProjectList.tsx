@@ -1,7 +1,7 @@
 import { Trans } from "@lingui/react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { FolderIcon } from "lucide-react";
-import { type FC, useCallback, useMemo } from "react";
+import { type FC, useCallback, useEffect, useMemo } from "react";
 import { formatLocaleDate } from "@/lib/date/formatLocaleDate";
 import { Badge } from "@/web/components/ui/badge";
 import { Button } from "@/web/components/ui/button";
@@ -32,6 +32,14 @@ export const ProjectList: FC = () => {
   const { config } = useConfig();
   const { source: sourceFilter } = Route.useSearch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (sourceFilter !== "all") {
+      localStorage.setItem("ccv:source-filter", sourceFilter);
+    } else {
+      localStorage.removeItem("ccv:source-filter");
+    }
+  }, [sourceFilter]);
 
   const setSourceFilter = useCallback(
     (value: SourceFilter) => {

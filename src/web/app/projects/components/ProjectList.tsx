@@ -1,7 +1,7 @@
 import { Trans } from "@lingui/react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { FolderIcon } from "lucide-react";
-import { type FC, useMemo, useState } from "react";
+import { type FC, useCallback, useMemo } from "react";
 import { formatLocaleDate } from "@/lib/date/formatLocaleDate";
 import { Badge } from "@/web/components/ui/badge";
 import { Button } from "@/web/components/ui/button";
@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/web/components/ui/card";
+import { Route } from "@/web/routes/projects/index";
 import { cn } from "@/web/utils";
 import { useConfig } from "../../hooks/useConfig";
 import { useProjects } from "../hooks/useProjects";
@@ -29,7 +30,19 @@ export const ProjectList: FC = () => {
     data: { projects },
   } = useProjects();
   const { config } = useConfig();
-  const [sourceFilter, setSourceFilter] = useState<SourceFilter>("all");
+  const { source: sourceFilter } = Route.useSearch();
+  const navigate = useNavigate();
+
+  const setSourceFilter = useCallback(
+    (value: SourceFilter) => {
+      void navigate({
+        to: "/projects",
+        search: { source: value === "all" ? undefined : value },
+        replace: true,
+      });
+    },
+    [navigate],
+  );
 
   const hasCursorProjects = projects.some((p) => p.meta.source === "cursor");
 

@@ -45,7 +45,7 @@ export const ProjectList: FC = () => {
     (value: SourceFilter) => {
       void navigate({
         to: "/projects",
-        search: { source: value === "all" ? undefined : value },
+        search: { source: value },
         replace: true,
       });
     },

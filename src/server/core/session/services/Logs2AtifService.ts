@@ -99,7 +99,15 @@ const LayerImpl = Effect.gen(function* () {
 
       const outputDir = yield* fs.makeTempDirectory({ prefix: "logs2atif-" });
 
-      const args = [...runner.baseArgs, sessionFilePath, outputDir, "--pricing", "builtin"];
+      const args = [
+        ...runner.baseArgs,
+        sessionFilePath,
+        outputDir,
+        "--pricing",
+        "builtin",
+        "--redact",
+        "--validate",
+      ];
       const commandLine = formatCommandLine(runner.command, args);
 
       return yield* Effect.gen(function* () {
@@ -134,10 +142,15 @@ const LayerImpl = Effect.gen(function* () {
           output = `Failed to start logs2atif: ${String(runResult.left)}`;
         }
 
-        const entries = yield* fs.readDirectory(outputDir);
+        const redactedDir = path.join(outputDir, "redacted");
+        const redactedDirExists = yield* fs
+          .exists(redactedDir)
+          .pipe(Effect.catchAll(() => Effect.succeed(false)));
+        const searchDir = redactedDirExists ? redactedDir : outputDir;
+        const entries = yield* fs.readDirectory(searchDir);
         const atifFile = entries.find((entry) => entry.endsWith(".atif.json"));
         const content =
-          atifFile !== undefined ? yield* fs.readFileString(path.join(outputDir, atifFile)) : null;
+          atifFile !== undefined ? yield* fs.readFileString(path.join(searchDir, atifFile)) : null;
 
         return {
           command: commandLine,
